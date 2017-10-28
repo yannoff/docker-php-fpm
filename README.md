@@ -1,0 +1,57 @@
+# yannoff/docker-php-fpm
+
+A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manager") [docker](https://www.docker.com/ "docker") image based on [Alpine](https://alpinelinux.org/ "Alpine Linux"), with [composer](https://getcomposer.org/ "composer") installed.
+
+## Quick Start
+
+### 1. Pull from [dockerhub](https://hub.docker.com/ "dockerhub")
+
+```bash
+docker pull yannoff/php-fpm
+```
+
+### 2. Run container
+
+Several ways to run the container:
+
+#### 2.1 Standalone:
+
+Ex:
+
+
+```bash
+docker run --rm --name fpm_service -v "/your/web/document/root":/www -p 9000:9001 -w /www yannoff/php-fpm
+```
+
+##### Options explained:
+- `--name fpm_service` set a name for the container (optional).
+
+    *If no name provided, docker will generate a random one itself.*
+- `--rm` tells docker to remove container after stopping (optional).
+
+- `-v "/your/web/document/root":/www` mounts your document root to `/www` directory of the container
+    *IMPORTANT NOTE: local path has to be wrapped between double quotes (`"`) for `docker` to recognize it as a directory*
+
+- `-p 9000:9001` port mapping: optionnally map port 9000 used by container to port 9001 on your host machine
+
+    *If no port mapping provided, docker will assign a random free port on host machine.*
+    *Note: As `PHP-FPM` is often used as a linked container, for example in association with `NGINX`, there is no real need to expose a specific port on host machine, as docker use its own internal ports to link services between each others.*
+- `-w /www` set an alternate container working dir, instead of the default `/server`.
+
+    *Note: this value **should** match the container mounted volume specified via `-v` option.*
+
+
+#### 2.2 Via [docker-compose](https://github.com/docker/compose "Docker Compose Project"):
+
+```yaml
+# docker-compose.yml
+fpm:
+    image: yannoff/php-fpm
+    # Here the exposed port on host machine is left unset, letting docker allocate it automatically to a free available port*
+    ports:
+        - 9000
+    volumes:
+        - /your/web/document/root:/www
+    working_dir: /www 
+
+```
