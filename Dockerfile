@@ -1,12 +1,12 @@
-FROM php:7.0-fpm-alpine
+FROM php:fpm-alpine
 
 LABEL author="Yannoff <https://github.com/yannoff>" \
       description="PHP-FPM with basic php extensions and composer" \
       license="MIT"
 
 # Install basic PHP extensions
-RUN apk update && \
-    apk add tzdata git postgresql-dev icu-dev curl-dev libxml2-dev bash && \
+RUN \
+    apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash && \
     docker-php-ext-install pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath
 
 # Install composer
