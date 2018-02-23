@@ -16,12 +16,12 @@ LABEL author="Yannoff <https://github.com/yannoff>" \
 RUN \
     apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash && \
     docker-php-ext-install pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath; \
-
-# Install composer
-#  - Temporarily install perl-digest-hmac to provide shasum tools
-#  - Download composer-setup.php & check for file integrity
-#  - Run composer installation script
-#  - Cleanup: remove installation script & perl-digest-hmac binaries
+    \
+    # Install composer
+    #  - Temporarily install perl-digest-hmac to provide shasum tools
+    #  - Download composer-setup.php & check for file integrity
+    #  - Run composer installation script
+    #  - Cleanup: remove installation script & perl-digest-hmac binaries
     apk add --no-cache --virtual build-deps perl-digest-hmac && \
     curl https://getcomposer.org/installer -o composer-setup.php; \
     ACTUAL_SIG=`shasum -a 384 composer-setup.php | awk '{ printf "%s",$1; }'`; \
@@ -30,6 +30,6 @@ RUN \
     php composer-setup.php --filename=composer --install-dir=/usr/bin && \
     rm composer-setup.php && \
     apk del build-deps; \
-
-# Purge APK cache
+    \
+    # Purge APK cache
     rm -v /var/cache/apk/*
