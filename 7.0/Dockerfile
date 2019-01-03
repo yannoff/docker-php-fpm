@@ -21,12 +21,12 @@ RUN \
     #  - Temporarily install perl-digest-hmac to provide shasum tools
     #  - Download composer-setup.php & check for file integrity
     #  - Run composer installation script
-    #  - Cleanup: remove installation script & perl-digest-hmac binaries
-    apk add --no-cache --virtual build-deps perl-digest-hmac && \
+    #  - Cleanup: remove installation script & core-utils binaries
+    apk add --no-cache --virtual build-deps coreutils && \
     curl https://getcomposer.org/installer -o composer-setup.php; \
-    ACTUAL_SIG=`shasum -a 384 composer-setup.php | awk '{ printf "%s",$1; }'`; \
+    ACTUAL_SIG=`sha384sum composer-setup.php | awk '{ printf "%s",$1; }'`; \
     EXPECTED_SIG=`curl -s https://composer.github.io/installer.sig | tr -d "\n"`; \
-    [ "$ACTUAL_SIG" = "$EXPECTED_SIG" ] && \
+    [ "$ACTUAL_SIG" = "$EXPECTED_SIG" ] || echo "[composer] Error: signatures does not match!"; \
     php composer-setup.php --filename=composer --install-dir=/usr/bin && \
     rm composer-setup.php && \
     apk del build-deps; \
