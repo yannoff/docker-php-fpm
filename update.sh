@@ -28,15 +28,23 @@ generate_dockerfile(){
 
 FROM php:${image}
 
+ARG PHP_EXTS="pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath"
+ARG PECL_EXTS
+ARG WITH_COMPOSER
+
 LABEL author="Yannoff <https://github.com/yannoff>" \\
       description="PHP-FPM with basic php extensions and composer" \\
       license="MIT"
 
+COPY docker-pecl-ext-install /usr/local/bin
+COPY docker-php-ext-getdeps  /usr/local/bin
+
 # Install basic packages & PHP extensions
 RUN \\
     BUILD_DEPS="coreutils make"; \\
-    apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash git && \\
-    docker-php-ext-install pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath; \\
+    PHP_EXT_DEPS=\`docker-php-ext-getdeps \$PHP_EXTS\`; \\
+    apk add --update \$PHP_EXT_DEPS bash git && \\
+    docker-php-ext-install \$PHP_EXTS; \\
     \\
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps \${BUILD_DEPS} && \\
@@ -78,6 +86,10 @@ do
     printf "Generating dockerfile for version %s..." ${v}
     mkdir -p $v 2>/dev/null
     generate_dockerfile $v
+    printf "\033[01;32mOK\033[00m\n"
+    printf "Copying context files for version %s..." ${v}
+    cp docker-pecl-ext-install ./${v}
+    cp docker-php-ext-getdeps ./${v}
     printf "\033[01;32mOK\033[00m\n"
 done
 printf "\nCopying latest version to root Dockerfile..."

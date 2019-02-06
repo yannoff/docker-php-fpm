@@ -1,0 +1,97 @@
+#!/bin/sh
+#
+# Builds the list of needed packages to install
+# against the required PHP extensions
+#
+
+# TODO Use bash array instead of a string for ${deps}
+deps=""
+while [ "$#" -gt "0" ]
+do
+    case "$1" in
+        bz2)
+            deps="$deps bzip2-dev"
+            ;;
+        curl)
+            deps="$deps curl-dev"
+            ;;
+        dom|simplexml|wddx|xml|xmlrpc|xmlwriter)
+            deps="$deps libxml2-dev"
+            ;;
+        enchant)
+            deps="$deps enchant-dev"
+            ;;
+        ftp|phar)
+            deps="$deps openssl-dev"
+            ;;
+        gd)
+            deps="$deps libpng-dev jpeg-dev"
+            ;;
+        gettext)
+            deps="$deps gettext-dev"
+            ;;
+        gmp)
+            deps="$deps gmp-dev"
+            ;;
+        imap)
+            deps="$deps imap-dev"
+            ;;
+        intl)
+            deps="$deps icu-dev"
+            ;;
+        ldap)
+            deps="$deps openldap-dev"
+            ;;
+        mcrypt)
+            deps="$deps libmcrypt-dev"
+            ;;
+        pdo_dblib)
+            deps="$deps freetds-dev"
+            ;;
+        pdo_pgsql|pgsql)
+            deps="$deps postgresql-dev"
+            ;;
+        pdo_sqlite)
+            deps="$deps sqlite-dev"
+            ;;
+        pspell)
+            deps="$deps aspell-dev"
+            ;;
+        readline)
+            deps="$deps libedit-dev"
+            ;;
+        recode)
+            deps="$deps recode-dev"
+            ;;
+        snmp)
+            deps="$deps net-snmp-dev"
+            ;;
+        tidy)
+            deps="$deps tidyhtml-dev"
+            ;;
+        xsl)
+            deps="$deps libxslt-dev"
+            ;;
+
+        # Unsupported extensions
+        filter|interbase|oci8|odbc|pdo_firebird|pdo_oci|pdo_odbc|xmlreader)
+            printf "Extension '%s' is not supported.\n" $1 >&2
+            ;;
+        
+        # Built-in extensions: no need to install
+        reflection|spl|standard)
+            printf "Extension '%s' is included as a built-in in PHP.\n" $1 >&2
+            ;;
+        
+        # The following extensions don't require any additional package to build
+        bcmath|calendar|ctype|dba|exif|fileinfo|hash|iconv|json|mysqli|opcache|pcntl|pdo|pdo_mysql|posix|session|shmop|soap|sockets|sysvmsg|sysvshm|tokenizer|zip)
+            ;;
+        *)
+            printf "Unknown '%s' extension.\n" $1 >&2
+            ;;
+    esac
+    shift 1
+done
+
+echo -n $deps >&1
+

@@ -8,15 +8,23 @@
 
 FROM php:5.5-fpm-alpine
 
+ARG PHP_EXTS="pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath"
+ARG PECL_EXTS
+ARG WITH_COMPOSER
+
 LABEL author="Yannoff <https://github.com/yannoff>" \
       description="PHP-FPM with basic php extensions and composer" \
       license="MIT"
 
+COPY docker-pecl-ext-install /usr/local/bin
+COPY docker-php-ext-getdeps  /usr/local/bin
+
 # Install basic packages & PHP extensions
 RUN \
     BUILD_DEPS="coreutils make"; \
-    apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash git && \
-    docker-php-ext-install pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath; \
+    PHP_EXT_DEPS=`docker-php-ext-getdeps $PHP_EXTS`; \
+    apk add --update $PHP_EXT_DEPS bash git && \
+    docker-php-ext-install $PHP_EXTS; \
     \
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
