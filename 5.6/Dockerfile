@@ -14,7 +14,7 @@ LABEL author="Yannoff <https://github.com/yannoff>" \
 
 # Install basic packages & PHP extensions
 RUN \
-    apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash && \
+    apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash git && \
     docker-php-ext-install pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath; \
     \
     # Install composer
