@@ -49,6 +49,8 @@ RUN \\
     [ "\$ACTUAL_SIG" = "\$EXPECTED_SIG" ] || echo "[composer] Error: signatures does not match!"; \\
     php composer-setup.php --filename=composer --install-dir=/usr/bin && \\
     rm composer-setup.php && \\
+    # When the container is run as an unknown user (e.g 1000), COMPOSER_HOME defaults to /.composer
+    mkdir /.composer && chmod 0777 /.composer; \\
     apk del build-deps; \\
     \\
     # Purge APK cache
