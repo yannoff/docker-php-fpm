@@ -38,8 +38,10 @@ RUN \
     ./configure --bindir /usr/local/bin bin/offenbach && make && make install; \
     cd /tmp && rm -rf offenbach; \
     \
-    # Cleanup: remove build dependencies
+    # Cleanup:
+    # - remove build dependencies
+    # - purge APK repository cache
+    # - remove PHP source tarballs
     apk del build-deps; \
-    \
-    # Purge APK cache
-    rm -v /var/cache/apk/*
+    rm -v /var/cache/apk/*; \
+    rm -rf /usr/src/*;
