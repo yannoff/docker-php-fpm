@@ -14,15 +14,16 @@ LABEL author="Yannoff <https://github.com/yannoff>" \
 
 # Install basic packages & PHP extensions
 RUN \
+    BUILD_DEPS="coreutils make"; \
     apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash git && \
     docker-php-ext-install pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath; \
     \
+    # Install temporary build dependencies
+    apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
+    \
     # Install composer
-    #  - Temporarily install perl-digest-hmac to provide shasum tools
     #  - Download composer-setup.php & check for file integrity
-    #  - Run composer installation script
-    #  - Cleanup: remove installation script & core-utils binaries
-    apk add --no-cache --virtual build-deps coreutils make && \
+    #  - Run composer installation script then remove it
     curl https://getcomposer.org/installer -o composer-setup.php; \
     ACTUAL_SIG=`sha384sum composer-setup.php | awk '{ printf "%s",$1; }'`; \
     EXPECTED_SIG=`curl -s https://composer.github.io/installer.sig | tr -d "\n"`; \
@@ -31,10 +32,13 @@ RUN \
     rm composer-setup.php && \
     # When the container is run as an unknown user (e.g 1000), COMPOSER_HOME defaults to /.composer
     mkdir /.composer && chmod 0777 /.composer; \
+    \
     # Install offenbach
     cd /tmp && git clone https://github.com/yannoff/offenbach.git && cd offenbach; \
     ./configure --bindir /usr/local/bin bin/offenbach && make && make install; \
     cd /tmp && rm -rf offenbach; \
+    \
+    # Cleanup: remove build dependencies
     apk del build-deps; \
     \
     # Purge APK cache
