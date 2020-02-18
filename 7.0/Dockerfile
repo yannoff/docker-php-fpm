@@ -8,6 +8,8 @@
 
 FROM php:7.0-fpm-alpine
 
+ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
+
 LABEL author="Yannoff <https://github.com/yannoff>" \
       description="PHP-FPM with basic php extensions and composer" \
       license="MIT"
@@ -17,11 +19,13 @@ ENV MUSL_LOCPATH /usr/local/share/i18n/locales/musl
 # @see https://github.com/docker-library/php/issues/240
 ENV LD_PRELOAD /usr/local/lib/preloadable_libiconv.so
 
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
+
 # Install basic packages & PHP extensions
 RUN \
     BUILD_DEPS="autoconf coreutils gcc libc-dev make"; \
-    apk add --update postgresql-dev icu-dev curl-dev libxml2-dev bash git && \
-    docker-php-ext-install pdo pdo_mysql pdo_pgsql intl curl json opcache xml bcmath; \
+    apk add --update bash git && \
+    install-php-extensions ${PHP_EXTS} >/dev/null; \
     \
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
