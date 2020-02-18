@@ -15,6 +15,7 @@ LABEL author="Yannoff <https://github.com/yannoff>" \
       license="MIT"
 
 ENV MUSL_LOCPATH /usr/local/share/i18n/locales/musl
+
 # Fix ICONV library implementation
 # @see https://github.com/docker-library/php/issues/240
 ENV LD_PRELOAD /usr/local/lib/preloadable_libiconv.so
@@ -23,61 +24,25 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 # Install basic packages & PHP extensions
 RUN \
-    BUILD_DEPS="autoconf coreutils gcc libc-dev make"; \
-    apk add --update bash git && \
+    REMOTE_SCRIPTS_URL=https://raw.githubusercontent.com/yannoff/alpine-tools/master/bin; \
+    \
+    apk add --update bash git; \
+    \
     install-php-extensions ${PHP_EXTS} >/dev/null; \
-    \
-    # Install temporary build dependencies
-    apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
-    \
     \
     # Install support for locales
     # @see https://github.com/gliderlabs/docker-alpine/issues/144
-    apk add --no-cache --virtual .locale-run-deps libintl && \
-    apk add --no-cache --virtual .locale-build-deps cmake make musl-dev gcc gettext-dev && \
-    cd /tmp && curl --output musl-locales-master.zip https://codeload.github.com/rilian-la-te/musl-locales/zip/master && \
-    unzip musl-locales-master.zip && cd musl-locales-master; \
-    cmake . && make && make install; \
-    cd .. && rm -rf /tmp/musl-locales-master*; \
+    curl -s ${REMOTE_SCRIPTS_URL}/install-locales | bash; \
     \
     # Fix ICONV library implementation
     # @see https://github.com/docker-library/php/issues/240
-    # (could possibly be replaced by:
-    #   apk add gnu-libiconv --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted; \
-    # @see https://github.com/wallabag/docker/pull/158/files
-    # )
-    apk add --no-cache --virtual .iconv-build-deps file libtool && \
-    curl -sSL http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz | tar -xz -C . && \
-    cd libiconv-1.14 && \
-    ./configure --prefix=/usr/local && \
-    curl -sSL https://raw.githubusercontent.com/mxe/mxe/7e231efd245996b886b501dad780761205ecf376/src/libiconv-1-fixes.patch | patch -p1 -u  && \
-    make && make install && \
-    libtool --finish /usr/local/lib; \
-    cd .. && \
-    rm -rfv libiconv-1.14; \
+    curl -s ${REMOTE_SCRIPTS_URL}/rebuild-iconv-lib | bash; \
     \
-    # Install composer
-    #  - Download composer-setup.php & check for file integrity
-    #  - Run composer installation script then remove it
-    curl -sSL https://getcomposer.org/installer -o composer-setup.php; \
-    ACTUAL_SIG=`sha384sum composer-setup.php | awk '{ printf "%s",$1; }'`; \
-    EXPECTED_SIG=`curl -s https://composer.github.io/installer.sig | tr -d "\n"`; \
-    [ "$ACTUAL_SIG" = "$EXPECTED_SIG" ] || echo "[composer] Error: signatures does not match!"; \
-    php composer-setup.php --filename=composer --install-dir=/usr/bin && \
-    rm composer-setup.php && \
-    \
-    # When the container is run as an unknown user (e.g 1000), COMPOSER_HOME defaults to /.composer
-    mkdir /.composer && chmod 0777 /.composer; \
-    \
-    # Install offenbach
-    cd /tmp && git clone https://github.com/yannoff/offenbach.git && cd offenbach; \
-    ./configure --bindir /usr/local/bin bin/offenbach && make && make install; \
-    cd /tmp && rm -rf offenbach; \
+    # Install composer & offenbach
+    curl -s ${REMOTE_SCRIPTS_URL}/install-composer | bash; \
     \
     # Cleanup:
-    # - remove build dependencies
     # - purge APK repository cache
     # - remove PHP source tarballs
-    apk del build-deps .locale-build-deps .iconv-build-deps; \
     rm -v /var/cache/apk/*; \
     rm -rf /usr/src/*;
