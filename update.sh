@@ -82,6 +82,8 @@ do
     mkdir -p $v 2>/dev/null
     generate_dockerfile $v
     printf "\033[01;32mOK\033[00m\n"
+    printf "Copying \033[01mdocker-php-*\033[00m scripts for version %s...\n" ${v}
+    cp -v docker-php-* ${v}
 done
 printf "\nCopying latest version to root Dockerfile..."
 cp latest/Dockerfile . 2>/dev/null

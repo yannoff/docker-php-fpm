@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# @package php/alpine/fpm
+# @author  Yannoff <https://github.com/yannoff>
+# @license MIT
+#
+set -e
+
+dir=/usr/src/php
+txz=/usr/src/php.tar.xz
+
+usage() {
+	echo "usage: $0 COMMAND"
+	echo
+	echo "Manage php source tarball lifecycle."
+	echo
+	echo "Commands:"
+	echo "   extract  extract php source tarball into directory $dir if not already done."
+	echo "   delete   delete extracted php source located into $dir if not already done."
+	echo "   download download php source tarball to $txz."
+	echo
+}
+
+case "$1" in
+	extract)
+		mkdir -p "$dir"
+		if [ ! -f "$dir/.docker-extracted" ]; then
+			tar -Jxf ${txz} -C "$dir" --strip-components=1
+			touch "$dir/.docker-extracted"
+		fi
+		;;
+
+	delete)
+		rm -rf "$dir"
+		;;
+
+    download)
+        curl -L -o ${txz} ${PHP_URL}
+        ;;
+	*)
+		usage
+		exit 1
+		;;
+esac

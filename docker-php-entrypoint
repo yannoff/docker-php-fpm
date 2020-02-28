@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# @package php/alpine/fpm
+# @author  Yannoff <https://github.com/yannoff>
+# @license MIT
+#
+set -e
+
+# Allow Xdebug extension activation via the XDEBUG_ENABLED custom environment variable
+xdebug_config_file=${PHP_INI_DIR}/conf.d/docker-php-ext-xdebug.ini
+if [ ${XDEBUG_ENABLED:-0} -eq 0 ]
+then
+    echo ';Xdebug extension disabled' >${xdebug_config_file}
+fi
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php-fpm "$@"
+fi
+
+# If command is "php-fpm", run it as root
+if [ "$1" = "php-fpm" ]
+then
+    # Change php-fpm user/group to match $USER/$GROUP environment variables
+    pool_config_file=/usr/local/etc/php-fpm.d/www.conf
+    if [ -w "${pool_config_file}"  -a -O "${pool_config_file}" ]
+    then
+        sed -i -E "s/(user\|owner)\s*=.*/\1 = ${USER:-0}/" ${pool_config_file}
+        sed -i -E "s/(group)\s*=.*/\1 = ${GROUP:-0}/" ${pool_config_file}
+    fi
+
+    exec "$@"
+else
+    # else allow executing ALL commands via a given user, if passed via env variables
+    su-exec ${USER:-0}:${GROUP:-0} "$@"
+fi
