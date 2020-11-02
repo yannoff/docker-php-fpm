@@ -118,6 +118,12 @@ do
     generate_dockerfile $v
     printf "\033[01;32mOK\033[00m\n"
 done
+
+latest=$(ls [0-9]* -d | cat | tail -n 1)
+printf "\nLinking latest image directory to version %s..." ${latest}
+rm latest
+ln -s ${latest} latest
+
 printf "\nCopying latest version to root Dockerfile..."
 cp latest/Dockerfile . 2>/dev/null
 printf "\033[01;32mOK\033[00m\n"
