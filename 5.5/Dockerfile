@@ -25,11 +25,11 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 RUN \
     BUILD_DEPS="autoconf coreutils gcc libc-dev make"; \
     apk add --update bash git && \
-    install-php-extensions ${PHP_EXTS} >/dev/null; \
     \
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
     \
+    install-php-extensions ${PHP_EXTS} && \
     \
     # Install support for locales
     # @see https://github.com/gliderlabs/docker-alpine/issues/144
