@@ -4,14 +4,14 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 
 ## Available tags
 
-- [8.0-rc-fpm-alpine](8.0-rc/Dockerfile)
-- [7.4-fpm-alpine](7.4/Dockerfile)
-- [7.3-fpm-alpine](7.3/Dockerfile)
-- [7.2-fpm-alpine](7.2/Dockerfile)
-- [7.1-fpm-alpine](7.1/Dockerfile) <sup>(*)</sup>
-- [7.0-fpm-alpine](7.0/Dockerfile) <sup>(*)</sup>
-- [5.6-fpm-alpine](5.6/Dockerfile) <sup>(*)</sup>
-- [5.5-fpm-alpine](5.5/Dockerfile) <sup>(*)</sup>
+- [8.0-rc-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/8.0-rc/Dockerfile)
+- [7.4-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.4/Dockerfile)
+- [7.3-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
+- [7.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile)
+- [7.1-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile) <sup>(*)</sup>
+- [7.0-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.0/Dockerfile) <sup>(*)</sup>
+- [5.6-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.6/Dockerfile) <sup>(*)</sup>
+- [5.5-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.5/Dockerfile) <sup>(*)</sup>
 
 > (*) _Those PHP versions have now reached their EOL. This means they are not officially supported anymore._
 
