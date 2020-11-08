@@ -1,5 +1,7 @@
 # yannoff/docker-php-fpm
 
+Home for [yannoff/php-fpm dockerhub repository](https://hub.docker.com/repository/docker/yannoff/php-fpm "dockerhub") sources.
+
 A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manager") [docker](https://www.docker.com/ "docker") image based on [Alpine](https://alpinelinux.org/ "Alpine Linux"), with [composer](https://getcomposer.org/ "composer") and [offenbach](https://github.com/yannoff/offenbach) installed.
 
 ## Available tags
@@ -15,52 +17,42 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 
 > (*) _Those PHP versions have now reached their EOL. This means they are not officially supported anymore._
 
-## Quick Start
+## Installed extensions
 
-### 1. Pull from [dockerhub](https://hub.docker.com/ "dockerhub")
+_By default, each image is bundled with the following extensions:_
 
-```bash
-docker pull yannoff/php-fpm
-```
+- bcmath
+- intl
+- opcache
+- pdo_mysql
+- pdo_pgsql
 
-### 2. Run container
+
+> :bulb: _To use the image with other extensions, consider [building a custom image](https://github.com/yannoff/docker-php-fpm/#2-building-custom-images), using the apposite `PHP_EXTS` [build argument](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)._
+
+## Usage
+
+### 1. Using the compiled images
 
 Several ways to run the container:
 
-#### 2.1 Standalone:
-
-Ex:
+#### 1.1 Standalone:
 
 
 ```bash
-docker run --rm --name fpm_service -v "/your/web/document/root":/www -p 9000:9001 -w /www yannoff/php-fpm
+docker run --rm --name fpm_service -v "/your/web/document/root":/www -p 9000:9001 -w /www yannoff/php-fpm:7.3-fpm_alpine
 ```
 
-##### Options explained:
-- `--name fpm_service` set a name for the container (optional).
-
-    *If no name provided, docker will generate a random one itself.*
-- `--rm` tells docker to remove container after stopping (optional).
-
-- `-v "/your/web/document/root":/www` mounts your document root to `/www` directory of the container
-    *IMPORTANT NOTE: local path has to be wrapped between double quotes (`"`) for `docker` to recognize it as a directory*
-
-- `-p 9000:9001` port mapping: optionnally map port 9000 used by container to port 9001 on your host machine
-
-    *If no port mapping provided, docker will assign a random free port on host machine.*
-    *Note: As `PHP-FPM` is often used as a linked container, for example in association with `NGINX`, there is no real need to expose a specific port on host machine, as docker use its own internal ports to link services between each others.*
-- `-w /www` set an alternate container working dir, instead of the default `/server`.
-
-    *Note: this value **should** match the container mounted volume specified via `-v` option.*
+_See the [apposite docker reference](https://docs.docker.com/engine/reference/run/) for details on `docker run` options._
 
 
-#### 2.2 Via [docker-compose](https://github.com/docker/compose "Docker Compose Project"):
+#### 1.2 Via [docker-compose](https://github.com/docker/compose "Docker Compose Project"):
 
 ```yaml
 # docker-compose.yml
 fpm:
-    image: yannoff/php-fpm
-    # Here the exposed port on host machine is left unset, letting docker allocate it automatically to a free available port*
+    image: yannoff/php-fpm:7.3-fpm-alpine
+    # Here the exposed port on host machine is left unset, letting docker allocate it automatically to a free available port
     ports:
         - 9000
     volumes:
@@ -68,3 +60,38 @@ fpm:
     working_dir: /www 
 
 ```
+
+_See the [docker compose reference](https://docs.docker.com/compose/compose-file/) for details on the `docker-compose.yaml` file syntax and options._
+
+### 2. Building custom images
+
+_For instance, let's say we want `gd` and `imap` extensions on the `7.3` image._
+
+There are 2 different methods to build the image:
+
+
+#### 2.1 The classic way
+
+1. Clone this repository or fetch a [zipball](https://github.com/yannoff/docker-php-fpm/archive/master.zip).
+
+2. Build the image with the required extensions:
+
+
+```bash
+$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' 7.3/
+```
+
+#### 2.1 The shortest way
+
+Build directly [using the repository URL](https://docs.docker.com/engine/reference/commandline/build/#git-repositories):
+
+```bash
+$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' git@github.com:yannoff/docker-php-fpm#:7.3/
+```
+
+
+## Credits
+
+Licensed under the [MIT License](https://github.com/yannoff/docker-php-fpm/blob/master/LICENSE).
+
+This project uses the awesome [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer) script for PHP extensions install.
