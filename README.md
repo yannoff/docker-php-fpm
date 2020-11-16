@@ -66,6 +66,10 @@ _See the [docker compose reference](https://docs.docker.com/compose/compose-file
 
 ### 2. Building custom images
 
+The `PHP_EXTS` build argument variable has been implemented to specify a custom list of extensions to install.
+
+Check the [mlocati/docker-php-extension-installer repository](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) for the full-list of supported extensions.
+
 _For instance, let's say we want `gd` and `imap` extensions on the `7.3` image._
 
 There are 2 different methods to build the image:
