@@ -87,7 +87,7 @@ $ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' 7.3/
 Build directly [using the repository URL](https://docs.docker.com/engine/reference/commandline/build/#git-repositories):
 
 ```bash
-$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' git@github.com:yannoff/docker-php-fpm#:7.3/
+$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' git@github.com:yannoff/docker-php-fpm.git#:7.3/
 ```
 
 
