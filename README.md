@@ -28,8 +28,13 @@ _By default, each image is bundled with the following extensions:_
 - pdo_mysql
 - pdo_pgsql
 
+_and the base APK packages:_
 
-> :bulb: _To use the image with other extensions, consider [building a custom image](https://github.com/yannoff/docker-php-fpm/#2-building-custom-images), using the apposite `PHP_EXTS` [build argument](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)._
+- git
+- bash
+
+
+> :bulb: _To use the image with other extensions or to add extra APK packages, consider [building a custom image](https://github.com/yannoff/docker-php-fpm/#2-building-custom-images), using the apposite [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)._
 
 ## Usage
 
@@ -66,8 +71,10 @@ _See the [docker compose reference](https://docs.docker.com/compose/compose-file
 
 ### 2. Building custom images
 
-The `PHP_EXTS` [build argument](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)
-gives control over the PHP extensions to be installed at build time <sup>1</sup>.
+Two [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg) are available:
+
+- `PHP_EXTS` : List of the PHP extensions to be installed at build time <sup>1</sup>
+- `APK_ADD` : List of extra APK packages to be installed at build time
 
 
 > <sup>(1)</sup> _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
