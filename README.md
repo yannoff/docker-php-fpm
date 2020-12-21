@@ -66,6 +66,12 @@ _See the [docker compose reference](https://docs.docker.com/compose/compose-file
 
 ### 2. Building custom images
 
+The `PHP_EXTS` [build argument](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)
+gives control over the PHP extensions to be installed at build time <sup>1</sup>.
+
+
+> <sup>(1)</sup> _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
+
 _For instance, let's say we want `gd` and `imap` extensions on the `7.3` image._
 
 There are 2 different methods to build the image:
@@ -86,8 +92,21 @@ $ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' 7.3/
 
 Build directly [using the repository URL](https://docs.docker.com/engine/reference/commandline/build/#git-repositories):
 
+##### 2.1.1 From the command line
+
 ```bash
 $ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' git@github.com:yannoff/docker-php-fpm.git#:7.3/
+```
+
+##### 2.1.2 In a docker compose file
+
+```yaml
+# docker-compose.yaml
+fpm:
+    build:
+        context: https://github.com/yannoff/docker-php-fpm.git#:7.3
+        args:
+            PHP_EXTS: gd imap
 ```
 
 
