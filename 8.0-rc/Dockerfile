@@ -9,6 +9,7 @@
 FROM php:8.0-rc-fpm-alpine
 
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
+ARG APK_ADD
 
 LABEL author="Yannoff <https://github.com/yannoff>" \
       description="PHP-FPM with basic php extensions and composer" \
@@ -24,7 +25,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 # Install basic packages & PHP extensions
 RUN \
     BUILD_DEPS="autoconf coreutils gcc libc-dev make"; \
-    apk add --update bash git && \
+    apk add --update bash git ${APK_ADD} && \
     \
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
