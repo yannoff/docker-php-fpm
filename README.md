@@ -83,18 +83,6 @@ _For instance, let's say we want `gd` and `imap` extensions on the `7.3` image._
 
 There are 2 different methods to build the image:
 
-
-#### 2.1 The classic way
-
-1. Clone this repository or fetch a [zipball](https://github.com/yannoff/docker-php-fpm/archive/master.zip).
-
-2. Build the image with the required extensions:
-
-
-```bash
-$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' 7.3/
-```
-
 #### 2.1 The shortest way
 
 Build directly [using the repository URL](https://docs.docker.com/engine/reference/commandline/build/#git-repositories):
@@ -114,6 +102,18 @@ fpm:
         context: https://github.com/yannoff/docker-php-fpm.git#:7.3
         args:
             PHP_EXTS: gd imap
+```
+
+
+#### 2.2 The classic way
+
+1. Clone this repository or fetch a [zipball](https://github.com/yannoff/docker-php-fpm/archive/master.zip).
+
+2. Build the image with the required extensions:
+
+
+```bash
+$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' 7.3/
 ```
 
 
