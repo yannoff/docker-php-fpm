@@ -55,7 +55,7 @@ RUN \
     make && make install && \
     libtool --finish /usr/local/lib; \
     cd .. && \
-    rm -rfv libiconv-1.14; \
+    rm -rf libiconv-1.14; \
     \
     # Use VIM for VI (instead of the poorly implemented BusyBox equivalent)
     rm /usr/bin/vi && ln -s /usr/bin/vim /usr/bin/vi && \
@@ -82,6 +82,6 @@ RUN \
     # - remove build dependencies
     # - purge APK repository cache
     # - remove PHP source tarballs
-    apk del build-deps .locale-build-deps .iconv-build-deps; \
-    rm -v /var/cache/apk/*; \
+    apk del --no-cache build-deps .locale-build-deps .iconv-build-deps; \
+    rm -rf  /usr/local/include/*; \
     rm -rf /usr/src/*;
