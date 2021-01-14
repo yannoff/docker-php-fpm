@@ -6,7 +6,7 @@
 # @license MIT
 #
 
-FROM php:8.0-rc-fpm-alpine
+FROM php:8.0-fpm-alpine
 
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
 ARG APK_ADD
