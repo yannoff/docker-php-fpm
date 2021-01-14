@@ -45,7 +45,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 # Install basic packages & PHP extensions
 RUN \\
     BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \\
-    apk add --update bash git \${APK_ADD} && \\
+    apk add --update bash git vim \${APK_ADD} && \\
     \\
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps \${BUILD_DEPS} && \\
@@ -76,6 +76,9 @@ RUN \\
     libtool --finish /usr/local/lib; \\
     cd .. && \\
     rm -rfv libiconv-1.14; \\
+    \\
+    # Use VIM for VI (instead of the poorly implemented BusyBox equivalent)
+    rm /usr/bin/vi && ln -s /usr/bin/vim /usr/bin/vi && \\
     \\
     # Install composer
     #  - Download composer-setup.php & check for file integrity

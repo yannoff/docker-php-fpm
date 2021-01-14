@@ -30,6 +30,7 @@ _By default, each image is bundled with the following extensions:_
 
 _and the base APK packages:_
 
+- vim
 - git
 - bash
 
