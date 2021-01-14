@@ -44,7 +44,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 # Install basic packages & PHP extensions
 RUN \\
-    BUILD_DEPS="autoconf coreutils gcc libc-dev make"; \\
+    BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \\
     apk add --update bash git \${APK_ADD} && \\
     \\
     # Install temporary build dependencies
