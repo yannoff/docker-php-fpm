@@ -112,6 +112,37 @@ RUN \\
     ./configure --bindir /usr/local/bin bin/offenbach && make && make install && \\
     cd /tmp && rm -rf offenbach && \\
     \\
+    # Install box
+    php_vers=\$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;"); \\
+    echo "phar.readonly = Off" >> \${PHP_INI_DIR}/php.ini; \\
+    if [ \${php_vers} -ge 73 ]; \\
+    then \\
+        curl -sSL -o /usr/local/bin/box https://github.com/box-project/box/releases/latest/download/box.phar; \\
+    else \\
+        # composer self-update --1 && \\
+        curl -LSs https://box-project.github.io/box2/installer.php | php && \\
+        mv box.phar /usr/local/bin/box; \\
+    fi && \\
+    chmod +x /usr/local/bin/box; \\
+    \\
+    # Install SATIS
+    cd /tmp && \\
+    git clone https://github.com/composer/satis.git && \\
+    cd satis && \\
+    if [ \${php_vers} -lt 73 ]; \\
+    then \\
+        git checkout f66ff72ce4e788e95827404888fd53b3c9d29f82 && \\
+        sed -i 's/vfsStream/vfsstream/' composer.json; \\
+    fi; \\
+    ### Fix PHP version conflict in 8.0
+    rm composer.lock && \\
+    composer install --no-dev && \\
+    box build && \\
+    mv satis.phar /usr/local/bin/satis.phar && \\
+    chmod +x /usr/local/bin/satis.phar && \\
+    cd .. && \\
+    rm -rf satis; \\
+    \\
     # Cleanup:
     # - remove build dependencies
     # - restore installed packages (avoid collision with build deps)

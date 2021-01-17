@@ -38,6 +38,11 @@ _and the base APK packages:_
 - git
 - bash
 
+_plus the following development tools:_
+
+- [box](https://github.com/box-project/box/releases/latest/download/box.phar)
+- [satis](https://github.com/composer/satis)
+
 
 > _[Building a custom image](https://github.com/yannoff/docker-php-fpm/#building-custom-images),_
 >_using the apposite [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg),_
