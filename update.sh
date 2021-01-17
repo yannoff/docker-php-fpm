@@ -111,8 +111,8 @@ TEMPLATE
 
 if [ $# -eq 0 ]
 then
-    printf "Usage: %s <version> [<version> [<version>]]\n" $0
-    exit 1
+    # If no version specified, update all
+    set -- 5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0
 fi
 
 for v in "$@"
