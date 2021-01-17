@@ -37,6 +37,7 @@ _and the base APK packages:_
 - vim
 - git
 - bash
+- coreutils
 
 _plus the following development tools:_
 
