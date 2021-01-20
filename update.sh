@@ -155,6 +155,9 @@ RUN \\
     \\
     rm -rf  /usr/local/include/*; \\
     rm -rf /usr/src/*;
+
+# Ship satis wrapper script
+COPY satis /usr/local/bin/
 TEMPLATE
 
 }
@@ -171,6 +174,8 @@ do
     mkdir -p $v 2>/dev/null
     generate_dockerfile $v
     printf "\033[01;32mOK\033[00m\n"
+    printf "Including satis wrapper script...\n"
+    cp -v satis ${v}
 done
 
 latest=$(ls [0-9]* -d | cat | tail -n 1)

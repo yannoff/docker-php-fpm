@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Wrapper script for the satis.phar PHP script
+# Implement support for satis.yaml config file
+#
+
+if [ $# -lt 1 ]
+then
+    echo "Usage: $0 <command> [<arguments]"
+    exit
+fi
+
+cmd=$1
+shift 1
+
+if [ "${cmd}" = "build" ]
+then
+    config=$1
+    output=$2
+
+    ext=${config##*.}
+    echo "[satis] Config file extension: $ext"
+
+    if [ "$ext" = "yaml" ]
+    then
+        echo "Converting ${config} file to JSON..."
+        json=$(mktemp -t tmp.XXXXXXX)
+        yamltools convert:yaml:json ${config} ${json}
+        config=${json}
+    fi
+    set -- ${config} ${output}
+fi
+
+satis.phar ${cmd} "$@"
+
+[ -f "${json}" ] && rm -v ${json}

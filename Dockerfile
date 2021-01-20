@@ -126,3 +126,6 @@ RUN \
     \
     rm -rf  /usr/local/include/*; \
     rm -rf /usr/src/*;
+
+# Ship satis wrapper script
+COPY satis /usr/local/bin/
