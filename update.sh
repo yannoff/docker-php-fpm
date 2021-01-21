@@ -141,7 +141,9 @@ RUN \\
     mv satis.phar /usr/local/bin/satis.phar && \\
     chmod +x /usr/local/bin/satis.phar && \\
     cd .. && \\
-    rm -rf satis; \\
+    rm -rf satis && \\
+    # Remove /tmp/box folder: avoid permission problems since it was created by root
+    rmdir /tmp/box; \\
     \\
     # Cleanup:
     # - remove build dependencies
