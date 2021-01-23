@@ -7,17 +7,21 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 ## Available tags
 
 - [8.0-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/8.0/Dockerfile)
+, [8.0](https://github.com/yannoff/docker-php-fpm/blob/master/8.0/Dockerfile)
 - [7.4-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.4/Dockerfile)
+, [7.4](https://github.com/yannoff/docker-php-fpm/blob/master/7.4/Dockerfile)
 - [7.3-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
+, [7.3](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
 - [7.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile)
-- [7.1-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile) <sup>(*)</sup>
-- [7.0-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.0/Dockerfile) <sup>(*)</sup>
-- [5.6-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.6/Dockerfile) <sup>(*)</sup>
-- [5.5-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.5/Dockerfile) <sup>(*)</sup>
+- [7.1-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile) <sup>**(1)**</sup>
+- [7.0-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.0/Dockerfile) <sup>**(1)**</sup>
+- [5.6-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.6/Dockerfile) <sup>**(1)**</sup>
+- [5.5-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.5/Dockerfile) <sup>**(1)**</sup>
 
-> (*) _Those PHP versions have now reached their EOL. This means they are not officially supported anymore._
+> <sup>**(1)**</sup> _Those PHP versions have now reached their EOL.<br/>
+> This means they are not [officially supported anymore](https://www.php.net/supported-versions.php) by the [PHP Group](https://www.php.net/credits.php)._
 
-## Installed extensions
+## Installed extensions & packages
 
 _By default, each image is bundled with the following extensions:_
 
@@ -34,31 +38,37 @@ _and the base APK packages:_
 - bash
 
 
-> :bulb: _To use the image with other extensions or to add extra APK packages, consider [building a custom image](https://github.com/yannoff/docker-php-fpm/#2-building-custom-images), using the apposite [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)._
+> _[Building a custom image](https://github.com/yannoff/docker-php-fpm/#building-custom-images),_
+>_using the apposite [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg),_
+> _allows a full-control over the installed extensions and let install extra `APK` packages on-demand._
+
 
 ## Usage
 
-### 1. Using the compiled images
 
-Several ways to run the container:
+Several ways to use the compiled images:
 
-#### 1.1 Standalone:
+- [running a container standalone](#run-standalone)
+- [in a docker compose stack](#or-in-a-docker-stack)
+
+### Run standalone...
 
 
 ```bash
-docker run --rm --name fpm_service -v "/your/web/document/root":/www -p 9000:9001 -w /www yannoff/php-fpm:7.3-fpm_alpine
+docker run -d --rm --name fpm7 -v /var/www/html:/var/www/html -p 9000:9001 yannoff/php-fpm:7.3
 ```
 
 _See the [apposite docker reference](https://docs.docker.com/engine/reference/run/) for details on `docker run` options._
 
 
-#### 1.2 Via [docker-compose](https://github.com/docker/compose "Docker Compose Project"):
+### ...or in a docker stack
 
 ```yaml
-# docker-compose.yml
+# docker-compose.yaml
 fpm:
-    image: yannoff/php-fpm:7.3-fpm-alpine
-    # Here the exposed port on host machine is left unset, letting docker allocate it automatically to a free available port
+    image: yannoff/php-fpm:7.3
+    # Here the exposed port on host machine is left unset,
+    # letting docker allocate it automatically to a free available port
     ports:
         - 9000
     volumes:
@@ -69,51 +79,65 @@ fpm:
 
 _See the [docker compose reference](https://docs.docker.com/compose/compose-file/) for details on the `docker-compose.yaml` file syntax and options._
 
-### 2. Building custom images
+## Building custom images
 
-Two [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg) are available:
+### Build arguments
 
-- `PHP_EXTS` : List of the PHP extensions to be installed at build time <sup>1</sup>
-- `APK_ADD` : List of extra APK packages to be installed at build time
+The following [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg) are available:
+
+| Build arg  | Description                                                             |
+|---         |---                                                                      |
+| `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(2)**</sup>         |
+| `APK_ADD`  | Extra `apk` packages to be installed at build time                      |
 
 
-> <sup>(1)</sup> _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
+**<sup>(2)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
 
-_For instance, let's say we want `gd` and `imap` extensions on the `7.3` image._
+### Examples
 
 There are 2 different methods to build the image:
 
-#### 2.1 The shortest way
+- [The shortest way](#the-shortest-way)
+- [The classic way](#the-classic-way)
+
+
+#### The shortest way
 
 Build directly [using the repository URL](https://docs.docker.com/engine/reference/commandline/build/#git-repositories):
 
-##### 2.1.1 From the command line
+##### Build from the command line...
+
+_Use case: PHP version 7.3 with `imap` extension only_
 
 ```bash
-$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' git@github.com:yannoff/docker-php-fpm.git#:7.3/
+$ docker build -t php73 --build-arg PHP_EXTS=imap git@github.com:yannoff/docker-php-fpm.git#:7.3
 ```
 
-##### 2.1.2 In a docker compose file
+##### ...or in a docker compose file
+
+_Use case: PHP version 8.0 with `gd` and `imap` extensions, PLUS `tzdata` extra APK package install_
 
 ```yaml
 # docker-compose.yaml
 fpm:
     build:
-        context: https://github.com/yannoff/docker-php-fpm.git#:7.3
+        context: https://github.com/yannoff/docker-php-fpm.git#:8.0
         args:
             PHP_EXTS: gd imap
+            APK_ADD: tzdata
 ```
 
 
-#### 2.2 The classic way
+#### The classic way
+
+_Use case: PHP version 7.1 with `gd` and `imap` extensions_
 
 1. Clone this repository or fetch a [zipball](https://github.com/yannoff/docker-php-fpm/archive/master.zip).
-
-2. Build the image with the required extensions:
+2. Build the image from the working directory
 
 
 ```bash
-$ docker build -t customimage:7.3 --build-arg PHP_EXTS='gd imap' 7.3/
+$ docker build -t customimage:7.1 --build-arg PHP_EXTS='gd imap' 7.1/
 ```
 
 
