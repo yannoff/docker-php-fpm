@@ -37,12 +37,6 @@ _and the base APK packages:_
 - vim
 - git
 - bash
-- coreutils
-
-_plus the following development tools:_
-
-- [box](https://github.com/box-project/box/releases/latest/download/box.phar)
-- [satis](https://github.com/composer/satis)
 
 
 > _[Building a custom image](https://github.com/yannoff/docker-php-fpm/#building-custom-images),_
