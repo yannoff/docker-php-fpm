@@ -47,6 +47,9 @@ RUN \\
     BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \\
     apk add --update bash git vim \${APK_ADD} && \\
     \\
+    # Keep a list of installed packages for after-cleanup restore
+    export installed=\$(apk info | xargs); \\
+    \\
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps \${BUILD_DEPS} && \\
     \\
@@ -100,9 +103,14 @@ RUN \\
     \\
     # Cleanup:
     # - remove build dependencies
-    # - purge APK repository cache
-    # - remove PHP source tarballs
+    # - restore installed packages (avoid collision with build deps)
+    # - remove C++ header files & PHP source tarball
     apk del --no-cache build-deps .locale-build-deps .iconv-build-deps; \\
+    \\
+    # Restore base installed packages, prevents accidental removal by build-deps cleanup
+    # @see https://github.com/yannoff/docker-php-fpm/issues/28
+    apk add --no-cache \${installed}; \\
+    \\
     rm -rf  /usr/local/include/*; \\
     rm -rf /usr/src/*;
 TEMPLATE
