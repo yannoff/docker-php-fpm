@@ -1,0 +1,24 @@
+#!/bin/bash
+
+cd / && 
+git_dirs="bin etc home lib opt root run sbin srv tmp usr var"
+
+case "$1" in
+    "init")
+        git init && \
+        echo "/.dockerenv" >> .gitignore && \
+        echo "/dev" >> .gitignore && \
+        echo "/proc" >> .gitignore && \
+        echo "/sys" >> .gitignore && \
+        git config user.email dummy@example.org && \
+        git config user.name  dummy
+        ;;
+    "save")
+        shift 1
+        git add . && \
+        git commit -m "$*"
+        ;;
+    "list")
+        git status --porcelain
+        ;;
+esac

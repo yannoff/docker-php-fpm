@@ -1,0 +1,59 @@
+commit fa47b7375ffd6caf085e8a0272f2ecf6e2712fcf
+Author: dummy <dummy@example.org>
+Date:   Sun Jan 31 15:39:51 2021 +0000
+
+    After iconv impl
+
+ lib/apk/db/scripts.tar                             | Bin 16896 -> 16896 bytes
+ usr/local/bin/iconv                                | Bin 0 -> 121912 bytes
+ usr/local/include/iconv.h                          | 242 ++++++++++++++++
+ usr/local/include/libcharset.h                     |  46 +++
+ usr/local/include/localcharset.h                   |  42 +++
+ usr/local/lib/charset.alias                        |   5 +
+ usr/local/lib/libcharset.a                         | Bin 0 -> 19976 bytes
+ usr/local/lib/libcharset.la                        |  41 +++
+ usr/local/lib/libcharset.so                        |   1 +
+ usr/local/lib/libcharset.so.1                      |   1 +
+ usr/local/lib/libcharset.so.1.0.0                  | Bin 0 -> 28944 bytes
+ usr/local/lib/libiconv.la                          |  41 +++
+ usr/local/lib/libiconv.so                          |   1 +
+ usr/local/lib/libiconv.so.2                        |   1 +
+ usr/local/lib/libiconv.so.2.5.1                    | Bin 0 -> 1512904 bytes
+ usr/local/lib/preloadable_libiconv.so              | Bin 0 -> 1479584 bytes
+ usr/local/share/doc/libiconv/iconv.1.html          | 206 +++++++++++++
+ usr/local/share/doc/libiconv/iconv.3.html          | 207 ++++++++++++++
+ usr/local/share/doc/libiconv/iconv_close.3.html    |  90 ++++++
+ usr/local/share/doc/libiconv/iconv_open.3.html     | 318 +++++++++++++++++++++
+ .../share/doc/libiconv/iconv_open_into.3.html      | 120 ++++++++
+ usr/local/share/doc/libiconv/iconvctl.3.html       | 189 ++++++++++++
+ usr/local/share/man/man1/iconv.1                   | 108 +++++++
+ usr/local/share/man/man3/iconv.3                   |  92 ++++++
+ usr/local/share/man/man3/iconv_close.3             |  31 ++
+ usr/local/share/man/man3/iconv_open.3              | 205 +++++++++++++
+ usr/local/share/man/man3/iconv_open_into.3         |  47 +++
+ usr/local/share/man/man3/iconvctl.3                |  67 +++++
+ 28 files changed, 2101 insertions(+)
+
+commit e7daccae563b45289196f6b1739f2a1dc656baa7
+Author: dummy <dummy@example.org>
+Date:   Sun Jan 31 15:39:23 2021 +0000
+
+    AFTER locale impl
+
+ lib/apk/db/scripts.tar                              | Bin 16896 -> 16896 bytes
+ usr/local/bin/locale                                | Bin 0 -> 26704 bytes
+ usr/local/etc/profile.d/00locale.sh                 |   2 ++
+ usr/local/share/i18n/locales/musl/ch_DE.UTF-8       | Bin 0 -> 268 bytes
+ usr/local/share/i18n/locales/musl/de_CH.UTF-8       | Bin 0 -> 116 bytes
+ usr/local/share/i18n/locales/musl/de_DE.UTF-8       | Bin 0 -> 1310 bytes
+ usr/local/share/i18n/locales/musl/en_GB.UTF-8       | Bin 0 -> 613 bytes
+ usr/local/share/i18n/locales/musl/en_US.UTF-8       | Bin 0 -> 13116 bytes
+ usr/local/share/i18n/locales/musl/fr_FR.UTF-8       | Bin 0 -> 12494 bytes
+ usr/local/share/i18n/locales/musl/ru_RU.UTF-8       | Bin 0 -> 16803 bytes
+ .../share/locale/ch_DE/LC_MESSAGES/musl-locales.mo  | Bin 0 -> 268 bytes
+ .../share/locale/de_CH/LC_MESSAGES/musl-locales.mo  | Bin 0 -> 116 bytes
+ .../share/locale/de_DE/LC_MESSAGES/musl-locales.mo  | Bin 0 -> 1310 bytes
+ .../share/locale/en_US/LC_MESSAGES/musl-locales.mo  | Bin 0 -> 1487 bytes
+ .../share/locale/fr_FR/LC_MESSAGES/musl-locales.mo  | Bin 0 -> 1552 bytes
+ .../share/locale/ru_RU/LC_MESSAGES/musl-locales.mo  | Bin 0 -> 2030 bytes
+ 16 files changed, 2 insertions(+)

@@ -21,28 +21,37 @@ ENV MUSL_LOCPATH /usr/local/share/i18n/locales/musl
 ENV LD_PRELOAD /usr/local/lib/preloadable_libiconv.so
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
+COPY git-util /usr/bin/
 
 # Install basic packages & PHP extensions
 RUN \
     BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \
     apk add --update bash git vim ${APK_ADD} && \
+    git util init && \
+    echo "/git-list*" >> /.gitignore && \
     \
     # Keep a list of installed packages for after-cleanup restore
     export installed=$(apk info | xargs); \
     \
+    git util save "Initial state" && \
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
+    git util save "After build-deps install" && \
     \
-    install-php-extensions ${PHP_EXTS} && \
+    install-php-extensions ${PHP_EXTS}; \
+    git util save "After ext install" && \
     \
     # Install support for locales
     # @see https://github.com/gliderlabs/docker-alpine/issues/144
     apk add --no-cache --virtual .locale-run-deps libintl && \
+    git util save "Before locale impl" && \
     apk add --no-cache --virtual .locale-build-deps cmake make musl-dev gcc gettext-dev && \
     cd /tmp && curl --output musl-locales-master.zip https://codeload.github.com/rilian-la-te/musl-locales/zip/master && \
     unzip musl-locales-master.zip && cd musl-locales-master; \
     cmake . && make && make install; \
     cd .. && rm -rf /tmp/musl-locales-master*; \
+    apk del --no-cache .locale-build-deps; \
+    git util save "AFTER locale impl" && \
     \
     # Fix ICONV library implementation
     # @see https://github.com/docker-library/php/issues/240
@@ -59,6 +68,8 @@ RUN \
     libtool --finish /usr/local/lib; \
     cd .. && \
     rm -rf libiconv-1.14; \
+    apk del --no-cache .iconv-build-deps; \
+    git util save "After iconv impl" && \
     \
     # Use VIM for VI (instead of the poorly implemented BusyBox equivalent)
     rm /usr/bin/vi && ln -s /usr/bin/vim /usr/bin/vi && \
@@ -85,7 +96,8 @@ RUN \
     # - remove build dependencies
     # - restore installed packages (avoid collision with build deps)
     # - remove C++ header files & PHP source tarball
-    apk del --no-cache build-deps .locale-build-deps .iconv-build-deps; \
+    apk del --no-cache build-deps; \
+    git util list > /git-list-all-deps && \
     \
     # Restore base installed packages, prevents accidental removal by build-deps cleanup
     # @see https://github.com/yannoff/docker-php-fpm/issues/28
