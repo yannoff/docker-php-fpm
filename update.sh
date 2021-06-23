@@ -97,9 +97,11 @@ RUN \\
     mkdir /.composer && chmod 0777 /.composer; \\
     \\
     # Install offenbach
-    cd /tmp && git clone https://github.com/yannoff/offenbach.git && cd offenbach; \\
-    ./configure --bindir /usr/local/bin bin/offenbach && make && make install; \\
-    cd /tmp && rm -rf offenbach; \\
+    cd /tmp && git clone https://github.com/yannoff/offenbach.git && cd offenbach && \\
+    # Use the latest release version instead of potentially unstable master
+    latest=\$(git describe --tags --abbrev=0) && git checkout \${latest} && \\
+    ./configure --bindir /usr/local/bin bin/offenbach && make && make install && \\
+    cd /tmp && rm -rf offenbach && \\
     \\
     # Cleanup:
     # - remove build dependencies
