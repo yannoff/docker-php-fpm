@@ -79,7 +79,7 @@ RUN \
     # Install offenbach
     cd /tmp && git clone https://github.com/yannoff/offenbach.git && cd offenbach && \
     # Use the latest release version instead of potentially unstable master
-    latest=$(git describe --tags --abbrev=0) && git checkout ${latest} && \
+    offenbach_version=$(git describe --tags --abbrev=0) && git checkout ${offenbach_version} && \
     ./configure --bindir /usr/local/bin bin/offenbach && make && make install && \
     cd /tmp && rm -rf offenbach && \
     \
