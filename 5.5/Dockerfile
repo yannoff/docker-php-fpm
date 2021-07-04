@@ -76,10 +76,12 @@ RUN \
     # When the container is run as an unknown user (e.g 1000), COMPOSER_HOME defaults to /.composer
     mkdir /.composer && chmod 0777 /.composer; \
     \
+    # Install yamltools standalone (ensure BC with any php version)
+    curl -Lo /usr/local/bin/yamltools https://github.com/yannoff/yamltools/releases/download/1.3.3/yamltools && chmod +x /usr/local/bin/yamltools && \
     # Install offenbach
     cd /tmp && git clone https://github.com/yannoff/offenbach.git && cd offenbach && \
     # Use the latest release version instead of potentially unstable master
-    offenbach_version=1.2.1 && git checkout ${offenbach_version} && \
+    offenbach_version=$(git describe --tags --abbrev=0) && git checkout ${offenbach_version} && \
     ./configure --bindir /usr/local/bin bin/offenbach && make && make install && \
     cd /tmp && rm -rf offenbach && \
     \
