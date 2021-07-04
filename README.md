@@ -12,7 +12,7 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 , [7.4](https://github.com/yannoff/docker-php-fpm/blob/master/7.4/Dockerfile)
 - [7.3-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
 , [7.3](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
-- [7.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile)
+- [7.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile) <sup>**(1)**</sup>
 - [7.1-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile) <sup>**(1)**</sup>
 - [7.0-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.0/Dockerfile) <sup>**(1)**</sup>
 - [5.6-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.6/Dockerfile) <sup>**(1)**</sup>
@@ -20,7 +20,7 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 
 > <sup>**(1)**</sup> _Those PHP versions have now reached their EOL.<br/>
 > This means they are not [officially supported anymore](https://www.php.net/supported-versions.php) by the [PHP Group](https://www.php.net/credits.php)._<br/>
-> <sup>**(2)**</sup> _[Offenbach](https://github.com/yannoff/offenbach) version frozen to `1.2.1` (see [yamltools#0abfdf7](https://github.com/yannoff/yamltools/commit/0abfdf7c727db62062a24d2e3ec351d38abcd3f6))._
+> <sup>**(2)**</sup> _[yamltools](https://github.com/yannoff/yamltools) version frozen to `1.3.3` (see [yamltools#0abfdf7](https://github.com/yannoff/yamltools/commit/0abfdf7c727db62062a24d2e3ec351d38abcd3f6))._
 
 ## Installed extensions & packages
 
@@ -88,11 +88,11 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 
 | Build arg  | Description                                                             |
 |---         |---                                                                      |
-| `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(2)**</sup>         |
+| `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(3)**</sup>         |
 | `APK_ADD`  | Extra `apk` packages to be installed at build time                      |
 
 
-**<sup>(2)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
+**<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
 
 ### Examples
 
