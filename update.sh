@@ -18,11 +18,11 @@ generate_dockerfile(){
     fi
 
     case ${version} in
-        latest)
-            image="fpm-alpine"
-            ;;
-        [0-9]*)
+        5.5|5.6|7.0|7.1|7.2)
             image="${1}-fpm-alpine"
+            ;;
+        *)
+            image="fpm-alpine\${ALPINE_VERSION}"
             ;;
     esac
     dockerfile=./${version}/Dockerfile
@@ -34,9 +34,9 @@ generate_dockerfile(){
 # @author  Yannoff <https://github.com/yannoff>
 # @license MIT
 #
-ARG ALPINE_VERSION
+ARG ALPINE_VERSION=3.13
 
-FROM php:${image}\${ALPINE_VERSION}
+FROM php:${image}
 
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
 ARG APK_ADD

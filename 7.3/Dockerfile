@@ -5,9 +5,9 @@
 # @author  Yannoff <https://github.com/yannoff>
 # @license MIT
 #
-ARG ALPINE_VERSION
+ARG ALPINE_VERSION=3.13
 
-FROM php:7.3-fpm-alpine${ALPINE_VERSION}
+FROM php:fpm-alpine${ALPINE_VERSION}
 
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
 ARG APK_ADD
