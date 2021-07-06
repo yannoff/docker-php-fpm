@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker build --security-opt=seccomp=default.json -t $IMAGE_NAME:$DOCKER_TAG $DOCKERFILE_PATH
+#docker build --security-opt=seccomp=default.json -t $IMAGE_NAME .
+docker build -t $IMAGE_NAME .

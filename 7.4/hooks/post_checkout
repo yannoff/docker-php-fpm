@@ -1,3 +1,8 @@
 #!/bin/bash
 
-apk add --no-cache runc
+echo "[post-checkout] add runc"
+apt-get -y install runc
+
+#echo "[post-checkout] env vars"
+
+#env | sort
