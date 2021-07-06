@@ -34,8 +34,9 @@ generate_dockerfile(){
 # @author  Yannoff <https://github.com/yannoff>
 # @license MIT
 #
+ARG ALPINE_VERSION
 
-FROM php:${image}
+FROM php:${image}\${ALPINE_VERSION}
 
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
 ARG APK_ADD
