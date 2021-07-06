@@ -24,6 +24,8 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 # Install basic packages & PHP extensions
 RUN \
+    set -e; \
+    \
     BUILD_DEPS="autoconf coreutils gcc libc-dev make patch runc"; \
     apk add --update bash git vim ${APK_ADD} && \
     \
