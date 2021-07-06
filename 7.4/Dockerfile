@@ -24,7 +24,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 # Install basic packages & PHP extensions
 RUN \
-    BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \
+    BUILD_DEPS="autoconf coreutils gcc libc-dev make patch runc"; \
     apk add --update bash git vim ${APK_ADD} && \
     \
     # Keep a list of installed packages for after-cleanup restore
