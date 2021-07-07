@@ -19,10 +19,13 @@ generate_dockerfile(){
 
     case ${version} in
         5.5|5.6|7.0|7.1|7.2)
-            image="${1}-fpm-alpine"
+            image="${version}-fpm-alpine"
+            ;;
+        latest)
+            image="fpm-alpine\${ALPINE_VERSION}"
             ;;
         *)
-            image="fpm-alpine\${ALPINE_VERSION}"
+            image="${version}-fpm-alpine\${ALPINE_VERSION}"
             ;;
     esac
     dockerfile=./${version}/Dockerfile
