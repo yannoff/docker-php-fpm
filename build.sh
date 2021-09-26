@@ -13,6 +13,7 @@ build_and_push(){
     cd ${version}
     docker pull php:${version}
     docker build -t ${image}:${tag} . && docker push ${image}:${tag}
+    docker tag ${image}:${tag} ${image}:${version} && docker push ${image}:${version}
     cd -
     printf "Building image \033[01m%s:%s\033[00m ...\033[01;32mOK\033[00m\n" "${image}" "$tag"
 }
