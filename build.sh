@@ -10,10 +10,13 @@ image=yannoff/php-fpm
 build_and_push(){
     local version=$1 tag=$2
     [ -z ${tag} ] && tag=${version}-fpm-alpine
+    printf "\033[01mBuilding image %s version %s...\033[00m\n" "${image}" "${version}"
     cd ${version}
     docker pull php:${version}
     docker build -t ${image}:${tag} . && docker push ${image}:${tag}
+    printf "\033[01mCreating shortcut image version %s:%s...\033[00m\n" "${image}" "${version}"
     docker tag ${image}:${tag} ${image}:${version} && docker push ${image}:${version}
+    printf "\033[01mCleaning assets...\033[00m\n"
     docker rmi ${image}:${version} ${image}:${tag} php:${version}
     cd -
     printf "Building image \033[01m%s:%s\033[00m ...\033[01;32mOK\033[00m\n" "${image}" "$tag"
@@ -30,6 +33,5 @@ docker pull mlocati/php-extension-installer
 
 for v in "$@"
 do
-    printf "\033[01mBuilding image %s version %s...\033[00m\n" "${image}" "${v}"
     build_and_push ${v}
 done
