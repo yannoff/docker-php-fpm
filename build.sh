@@ -10,11 +10,13 @@ image=yannoff/php-fpm
 build_and_push(){
     local version=$1 tag=$2
     [ -z ${tag} ] && tag=${version}-fpm-alpine
-    printf "\033[01mBuilding image %s version %s...\033[00m\n" "${image}" "${version}"
+    printf "\033[01mProcessing version %s...\033[00m\n" "${version}"
     cd ${version}
+    printf "\033[01mPulling php:%s base image...\033[00m\n" "${version}"
     docker pull php:${version}
+    printf "\033[01mBuilding image %s:%s...\033[00m\n" "${image}" "${tag}"
     docker build -t ${image}:${tag} . 2>&1 >./build.log && docker push ${image}:${tag}
-    printf "\033[01mCreating shortcut image version %s:%s...\033[00m\n" "${image}" "${version}"
+    printf "\033[01mCreating shortcut image %s:%s...\033[00m\n" "${image}" "${version}"
     docker tag ${image}:${tag} ${image}:${version} && docker push ${image}:${version}
     printf "\033[01mCleaning assets...\033[00m\n"
     docker rmi ${image}:${version} ${image}:${tag} php:${version}
