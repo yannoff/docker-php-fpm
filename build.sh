@@ -13,7 +13,7 @@ build_and_push(){
     printf "\033[01mBuilding image %s version %s...\033[00m\n" "${image}" "${version}"
     cd ${version}
     docker pull php:${version}
-    docker build -t ${image}:${tag} . && docker push ${image}:${tag}
+    docker build -t ${image}:${tag} . 2>&1 >./build.log && docker push ${image}:${tag}
     printf "\033[01mCreating shortcut image version %s:%s...\033[00m\n" "${image}" "${version}"
     docker tag ${image}:${tag} ${image}:${version} && docker push ${image}:${version}
     printf "\033[01mCleaning assets...\033[00m\n"
