@@ -6,6 +6,7 @@
 #
 
 image=yannoff/php-fpm
+logfile=./build.log
 
 build_and_push(){
     local version=$1 tag=$2
@@ -15,7 +16,7 @@ build_and_push(){
     printf "\033[01mPulling php:%s base image...\033[00m\n" "${version}"
     docker pull php:${version}
     printf "\033[01mBuilding image %s:%s...\033[00m\n" "${image}" "${tag}"
-    docker build -t ${image}:${tag} . 2>&1 >./build.log && docker push ${image}:${tag}
+    docker build -t ${image}:${tag} . 2>&1 >>${logfile} && docker push ${image}:${tag}
     printf "\033[01mCreating shortcut image %s:%s...\033[00m\n" "${image}" "${version}"
     docker tag ${image}:${tag} ${image}:${version} && docker push ${image}:${version}
     printf "\033[01mCleaning assets...\033[00m\n"
@@ -32,6 +33,8 @@ fi
 
 printf "\033[01mUpdating %s ...\033[00m\n" "mlocati/php-extension-installer"
 docker pull mlocati/php-extension-installer
+
+rm ${logfile}
 
 for v in "$@"
 do
