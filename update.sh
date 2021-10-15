@@ -43,6 +43,7 @@ FROM php:${image}
 
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
 ARG APK_ADD
+ARG PHP_LIBS
 
 LABEL author="Yannoff <https://github.com/yannoff>" \\
       description="PHP-FPM with basic php extensions and composer" \\
@@ -52,6 +53,8 @@ ENV MUSL_LOCPATH /usr/local/share/i18n/locales/musl
 # Fix ICONV library implementation
 # @see https://github.com/docker-library/php/issues/240
 ENV LD_PRELOAD /usr/local/lib/preloadable_libiconv.so
+
+ENV PATH /.composer/vendor/bin:\$PATH
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 
@@ -118,6 +121,11 @@ RUN \\
     ./configure --bindir /usr/local/bin bin/offenbach && make && make install && \\
     cd /tmp && rm -rf offenbach && \\
     \\
+    # Install on-demand global PHP packages, if appropriate
+    if [ -n "\${PHP_LIBS}" ]; \\
+    then \\
+        composer global require \${PHP_LIBS}; \\
+    fi; \\
     # Cleanup:
     # - remove build dependencies
     # - restore installed packages (avoid collision with build deps)
