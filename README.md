@@ -92,6 +92,7 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 |---         |---                                                                      |
 | `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(3)**</sup>         |
 | `APK_ADD`  | Extra `apk` packages to be installed at build time                      |
+| `PHP_LIBS` | PHP libraries to be installed as composer global dependencies           |
 
 
 **<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
