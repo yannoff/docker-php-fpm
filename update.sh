@@ -129,15 +129,11 @@ RUN \\
     # Cleanup:
     # - remove build dependencies
     # - restore installed packages (avoid collision with build deps)
-    # - remove C++ header files & PHP source tarball
     apk del --no-cache build-deps .locale-build-deps .iconv-build-deps; \\
     \\
     # Restore base installed packages, prevents accidental removal by build-deps cleanup
     # @see https://github.com/yannoff/docker-php-fpm/issues/28
-    apk add --no-cache \${installed}; \\
-    \\
-    rm -rf  /usr/local/include/*; \\
-    rm -rf /usr/src/*;
+    apk add --no-cache \${installed};
 TEMPLATE
 
 }
