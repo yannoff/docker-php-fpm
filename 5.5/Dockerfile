@@ -22,7 +22,9 @@ ENV MUSL_LOCPATH /usr/local/share/i18n/locales/musl
 # @see https://github.com/docker-library/php/issues/240
 ENV LD_PRELOAD /usr/local/lib/preloadable_libiconv.so
 
-ENV PATH /.composer/vendor/bin:$PATH
+# When the container is run as an unknown user (e.g 1000), COMPOSER_HOME defaults to /.composer
+ENV COMPOSER_HOME /.composer
+ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 
@@ -77,8 +79,8 @@ RUN \
     php composer-setup.php --filename=composer --install-dir=/usr/bin && \
     rm composer-setup.php && \
     \
-    # When the container is run as an unknown user (e.g 1000), COMPOSER_HOME defaults to /.composer
-    mkdir /.composer && chmod 0777 /.composer; \
+    # Ensure the COMPOSER_HOME directory is accessible to all users
+    mkdir $COMPOSER_HOME && chmod 0777 $COMPOSER_HOME; \
     \
     # Install yamltools standalone (ensure BC with any php version)
     curl -Lo /usr/local/bin/yamltools https://github.com/yannoff/yamltools/releases/download/1.3.3/yamltools && chmod +x /usr/local/bin/yamltools && \
