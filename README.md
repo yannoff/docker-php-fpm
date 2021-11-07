@@ -14,114 +14,38 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 , [7.4](https://github.com/yannoff/docker-php-fpm/blob/master/7.4/Dockerfile)
 - [7.3-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
 , [7.3](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
-- [7.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile) <sup>**(1)**</sup>
-- [7.1-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile) <sup>**(1)**</sup>
-- [7.0-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.0/Dockerfile) <sup>**(1)**</sup>
-- [5.6-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.6/Dockerfile) <sup>**(1)**</sup>
-- [5.5-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.5/Dockerfile) <sup>**(1)**</sup> <sup>**(2)**</sup>
+- [7.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile)
+, [7.2](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile) <sup>**(1)**</sup>
+- [7.1-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile)
+, [7.1](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile) <sup>**(1)**</sup>
+- [7.0-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.0/Dockerfile)
+, [7.0](https://github.com/yannoff/docker-php-fpm/blob/master/7.0/Dockerfile) <sup>**(1)**</sup>
+- [5.6-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.6/Dockerfile)
+, [5.6](https://github.com/yannoff/docker-php-fpm/blob/master/5.6/Dockerfile) <sup>**(1)**</sup>
+- [5.5-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/5.5/Dockerfile)
+, [5.5](https://github.com/yannoff/docker-php-fpm/blob/master/5.5/Dockerfile) <sup>**(1)**</sup> <sup>**(2)**</sup>
 
-> <sup>**(1)**</sup> _Those PHP versions have now reached their EOL.<br/>
-> This means they are not [officially supported anymore](https://www.php.net/supported-versions.php) by the [PHP Group](https://www.php.net/credits.php)._<br/>
+> <sup>**(1)**</sup> _Those PHP versions have now reached their [EOL](https://www.php.net/eol.php)._<br/>
 > <sup>**(2)**</sup> _[yamltools](https://github.com/yannoff/yamltools) version frozen to `1.3.3` (see [yamltools#0abfdf7](https://github.com/yannoff/yamltools/commit/0abfdf7c727db62062a24d2e3ec351d38abcd3f6))._
-
-## Installed extensions & packages
-
-_By default, each image is bundled with the following extensions:_
-
-- bcmath
-- intl
-- opcache
-- pdo_mysql
-- pdo_pgsql
-
-_and the base APK packages:_
-
-- vim
-- git
-- bash
-
-
-> _[Building a custom image](https://github.com/yannoff/docker-php-fpm/#building-custom-images),_
->_using the apposite [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg),_
-> _allows a full-control over the installed extensions and let install extra `APK` packages on-demand._
-
 
 ## Usage
 
+- [Dynamically build images](#building-custom-images) for a fine-tuned docker stack
+- [Use pre-compiled images](#using-base-images) to run on-the-fly, one-shot commands
 
-Several ways to use the compiled images:
+### Building custom images
 
-- [running a container standalone](#run-standalone)
-- [in a docker compose stack](#or-in-a-docker-stack)
-
-### Run standalone...
-
-
-```bash
-docker run -d --rm --name fpm7 -v /var/www/html:/var/www/html -p 9000:9001 yannoff/php-fpm:7.3
-```
-
-_See the [apposite docker reference](https://docs.docker.com/engine/reference/run/) for details on `docker run` options._
+_Dynamic builds allow for flexible, fine-tuned and featherweight images._<br/>
+_The recommended way is to [use the repository URL](https://docs.docker.com/engine/reference/commandline/build/#git-repositories) as build context._
 
 
-### ...or in a docker stack
+_**Example:** Integration in a [docker-compose](https://docs.docker.com/compose/compose-file/) stack_
 
-```yaml
-# docker-compose.yaml
-fpm:
-    image: yannoff/php-fpm:7.3
-    # Here the exposed port on host machine is left unset,
-    # letting docker allocate it automatically to a free available port
-    ports:
-        - 9000
-    volumes:
-        - /your/web/document/root:/www
-    working_dir: /www 
-
-```
-
-_See the [docker compose reference](https://docs.docker.com/compose/compose-file/) for details on the `docker-compose.yaml` file syntax and options._
-
-## Building custom images
-
-### Build arguments
-
-The following [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg) are available:
-
-| Build arg  | Description                                                             |
-|---         |---                                                                      |
-| `TZ`       | The timezone to use for the container - *defaults to `UTC`*             |
-| `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(3)**</sup>         |
-| `APK_BASE` | Base [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time                      |
-| `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time                      |
-| `PHP_LIBS` | PHP libraries to be installed as composer global dependencies           |
-
-
-**<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
-
-### Examples
-
-There are 2 different methods to build the image:
-
-- [The shortest way](#the-shortest-way)
-- [The classic way](#the-classic-way)
-
-
-#### The shortest way
-
-Build directly [using the repository URL](https://docs.docker.com/engine/reference/commandline/build/#git-repositories):
-
-##### Build from the command line...
-
-_Use case: PHP version 7.3 with `imap` extension only_
-
-```bash
-$ docker build -t php73 --build-arg PHP_EXTS=imap git@github.com:yannoff/docker-php-fpm.git#:7.3
-```
-
-##### ...or in a docker compose file
-
-_Use case: PHP version 8.0 with `gd` and `imap` extensions PLUS `patch` extra APK package install, with `Europe/Rome` as timezone_
+- PHP version `8.0`
+- `gd` and `imap` extensions
+- `patch` extra package install
+- `Europe/Rome` as timezone
+- `laravel/installer` as a composer global package
 
 ```yaml
 # docker-compose.yaml
@@ -132,20 +56,68 @@ fpm:
             TZ: Europe/Rome
             PHP_EXTS: gd imap
             APK_EXTRA: patch
+            PHP_LIBS: laravel/installer
 ```
 
-
-#### The classic way
-
-_Use case: PHP version 7.1 with `gd` and `imap` extensions_
-
-1. Clone this repository or fetch a [zipball](https://github.com/yannoff/docker-php-fpm/archive/master.zip).
-2. Build the image from the working directory
-
+*Alternatively, building from the command-line:*
 
 ```bash
-$ docker build -t customimage:7.1 --build-arg PHP_EXTS='gd imap' 7.1/
+docker                                     \
+    build                                  \
+    -t php8.0                              \
+    --build-arg TZ="Europe/Rome"           \
+    --build-arg PHP_EXTS="gd imap"         \
+    --build-arg APK_ADD=patch              \
+    --build-arg PHP_LIBS=laravel/installer \
+    git@github.com:yannoff/docker-php-fpm.git#:8.0
 ```
+
+
+#### Build arguments reference
+
+The following [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg) are available:
+
+| Build arg  | Description                                                                                  | Defaults
+|---         |---                                                                                           |---
+| `TZ`       | The timezone to use for the container                                                        | `UTC`
+| `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(3)**</sup>                              | `pdo_mysql pdo_pgsql intl opcache bcmath`
+| `APK_BASE` | Base [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time  | `bash git vim`
+| `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time | -
+| `PHP_LIBS` | PHP libraries to be installed as composer global dependencies                                | -
+
+
+> **<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
+
+
+### Using base images
+
+_On the other hand, the base pre-compiled images from [dockerhub](https://hub.docker.com/repository/docker/yannoff/php-fpm "dockerhub") may be convenient to [run](https://docs.docker.com/engine/reference/run/) php or composer commands on the fly, providing a minimal PHP ecosystem._
+
+_**Example:** Creating a new [laravel](https://github.com/laravel/laravel) empty project_
+
+```
+docker                  \
+    run                 \
+    --rm                \
+    -it                 \
+    -u $UID:$GID        \
+    -w /src             \
+    -v $PWD:/src        \
+    yannoff/php-fpm:8.0 \
+    composer create-project --ignore-platform-reqs laravel/laravel acme
+```
+
+> _Since the base image may not contain all of the required PHP extensions, the `--ignore-platform-reqs` switch is recommended_
+
+#### Pre-compiled images defaults
+
+_Pre-compiled images are built with the following default values:_
+
+| Build arg  | Value
+|---         |---   
+| `TZ`       | `UTC`
+| `PHP_EXTS` | `pdo_mysql pdo_pgsql intl opcache bcmath`
+| `APK_BASE` | `bash git vim`
 
 
 ## Credits
