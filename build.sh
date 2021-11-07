@@ -34,6 +34,9 @@ build_and_push(){
     cd ${version}
     printf "\033[01mPulling php:%s base image...\033[00m\n" "${tag}"
 
+    # Cleanup previous log file
+    rm ${logfile}
+
     # Ensure the original php image is up to date
     docker pull php:${tag}
 
@@ -72,9 +75,6 @@ fi
 # Ensure the php extension installer image is up to date
 printf "\033[01mUpdating %s ...\033[00m\n" "mlocati/php-extension-installer"
 docker pull mlocati/php-extension-installer
-
-# Cleanup previous log file
-rm ${logfile}
 
 # Process each version
 for v in "$@"
