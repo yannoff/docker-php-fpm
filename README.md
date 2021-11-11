@@ -90,6 +90,7 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 
 | Build arg  | Description                                                             |
 |---         |---                                                                      |
+| `TZ`       | The timezone to use for the container - *defaults to `UTC`*             |
 | `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(3)**</sup>         |
 | `APK_ADD`  | Extra `apk` packages to be installed at build time                      |
 | `PHP_LIBS` | PHP libraries to be installed as composer global dependencies           |
@@ -119,7 +120,7 @@ $ docker build -t php73 --build-arg PHP_EXTS=imap git@github.com:yannoff/docker-
 
 ##### ...or in a docker compose file
 
-_Use case: PHP version 8.0 with `gd` and `imap` extensions, PLUS `tzdata` extra APK package install_
+_Use case: PHP version 8.0 with `gd` and `imap` extensions PLUS `patch` extra APK package install, with `Europe/Rome` as timezone_
 
 ```yaml
 # docker-compose.yaml
@@ -127,8 +128,9 @@ fpm:
     build:
         context: https://github.com/yannoff/docker-php-fpm.git#:8.0
         args:
+            TZ: Europe/Rome
             PHP_EXTS: gd imap
-            APK_ADD: tzdata
+            APK_ADD: patch
 ```
 
 
