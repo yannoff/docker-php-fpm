@@ -9,6 +9,7 @@ ARG ALPINE_VERSION=3.13
 
 FROM php:8.0-fpm-alpine${ALPINE_VERSION}
 
+ARG TZ=UTC
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
 ARG APK_ADD
 ARG PHP_LIBS
@@ -31,7 +32,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 # Install basic packages & PHP extensions
 RUN \
     BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \
-    apk add --update bash git vim ${APK_ADD} && \
+    apk add --update bash git tzdata vim ${APK_ADD} && \
     \
     # Keep a list of installed packages for after-cleanup restore
     export installed=$(apk info | xargs); \
@@ -68,6 +69,11 @@ RUN \
     \
     # Use VIM for VI (instead of the poorly implemented BusyBox equivalent)
     rm /usr/bin/vi && ln -s /usr/bin/vim /usr/bin/vi && \
+    \
+    # Configure PHP Runtime & system timezone
+    ln -s /usr/share/zoneinfo/${TZ} /etc/localtime && \
+    echo "[Date]" >> /usr/local/etc/php/conf.d/datetime.ini && \
+    echo "date.timezone = ${TZ}" >> /usr/local/etc/php/conf.d/datetime.ini && \
     \
     # Install composer
     #  - Download composer-setup.php & check for file integrity
