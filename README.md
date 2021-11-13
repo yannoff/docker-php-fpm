@@ -92,7 +92,8 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 |---         |---                                                                      |
 | `TZ`       | The timezone to use for the container - *defaults to `UTC`*             |
 | `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(3)**</sup>         |
-| `APK_ADD`  | Extra `apk` packages to be installed at build time                      |
+| `APK_BASE` | Base [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time                      |
+| `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time                      |
 | `PHP_LIBS` | PHP libraries to be installed as composer global dependencies           |
 
 
@@ -130,7 +131,7 @@ fpm:
         args:
             TZ: Europe/Rome
             PHP_EXTS: gd imap
-            APK_ADD: patch
+            APK_EXTRA: patch
 ```
 
 

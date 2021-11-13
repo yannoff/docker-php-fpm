@@ -11,7 +11,8 @@ FROM php:7.4-fpm-alpine${ALPINE_VERSION}
 
 ARG TZ=UTC
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
-ARG APK_ADD
+ARG APK_BASE="bash git vim"
+ARG APK_EXTRA
 ARG PHP_LIBS
 
 LABEL author="Yannoff <https://github.com/yannoff>" \
@@ -32,7 +33,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 # Install basic packages & PHP extensions
 RUN \
     BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \
-    apk add --update bash git tzdata vim ${APK_ADD} && \
+    apk add --update tzdata ${APK_BASE} ${APK_EXTRA} && \
     \
     # Keep a list of installed packages for after-cleanup restore
     export installed=$(apk info | xargs); \
