@@ -1,0 +1,2 @@
+TZ=Europe/Paris
+PHP_EXTS=intl opcache
