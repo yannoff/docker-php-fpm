@@ -119,8 +119,8 @@ _Pre-compiled images are built with the following default values:_
 
 | Build arg  | Value
 |---         |---   
-| `TZ`       | `UTC`
-| `PHP_EXTS` | `pdo_mysql pdo_pgsql intl opcache bcmath`
+| `TZ`       | `Europe/Paris`
+| `PHP_EXTS` | `intl opcache`
 | `APK_BASE` | `bash git vim`
 | `COMPOSER_VERSION` | `2`
 

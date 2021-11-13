@@ -23,7 +23,7 @@ get_latest_numver(){
 # Usage: build_and_push <version> [<tag>]
 #
 build_and_push(){
-    local version=$1 tag=$2 latest
+    local version=$1 tag=$2 args latest
 
     # If no custom tag provided, use <version>-fpm-alpine
     [ -z ${tag} ] && tag=${version}-fpm-alpine
@@ -42,8 +42,13 @@ build_and_push(){
 
     # Build & push yannoff/php-fpm:<version>-fpm-alpine image
     printf "\033[01mBuilding image %s:%s...\033[00m\n" "${image}" "${tag}"
-    docker build -t ${image}:${tag} . 2>&1 >>${logfile} && docker push ${image}:${tag}
-
+    # Fetch build arguments from config file
+    bargs=()
+    while IFS= read -r line
+    do
+        bargs+=(--build-arg "${line}")
+    done < ../.build-args
+    docker build "${bargs[@]}" -t ${image}:${tag} . 2>&1 >>${logfile} && docker push ${image}:${tag}
     # Get back to the top-level directory
     cd -
 

@@ -54,9 +54,19 @@ ENV PATH \$COMPOSER_HOME/vendor/bin:\$PATH
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 
-# Install basic packages & PHP extensions
 RUN \\
     BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \\
+    \\
+    echo -e "\\033[01m******************************* Build arguments ******************************\\033[00m"; \\
+    echo -e "\\033[01mTZ:\\033[01;33m \${TZ}\\033[00m"; \\
+    echo -e "\\033[01mAPK_BASE:\\033[01;33m \${APK_BASE}\\033[00m"; \\
+    echo -e "\\033[01mAPK_EXTRA:\\033[01;33m \${APK_EXTRA}\\033[00m"; \\
+    echo -e "\\033[01mPHP_EXTS:\\033[01;33m \${PHP_EXTS}\\033[00m"; \\
+    echo -e "\\033[01mPHP_LIBS:\\033[01;33m \${PHP_LIBS}\\033[00m"; \\
+    echo -e "\\033[01mCOMPOSER_VERSION:\\033[01;33m \${COMPOSER_VERSION}\\033[00m"; \\
+    echo -e "\\033[01m******************************************************************************\\033[00m"; \\
+    \\
+    # Install basic packages
     apk add --update tzdata \${APK_BASE} \${APK_EXTRA} && \\
     \\
     # Keep a list of installed packages for after-cleanup restore
@@ -65,6 +75,7 @@ RUN \\
     # Install temporary build dependencies
     apk add --no-cache --virtual build-deps \${BUILD_DEPS} && \\
     \\
+    # Install PHP extensions
     install-php-extensions \${PHP_EXTS} && \\
     \\
     # Install support for locales
