@@ -5,9 +5,9 @@
 # @author  Yannoff <https://github.com/yannoff>
 # @license MIT
 #
-ARG ALPINE_VERSION=3.13
+ARG ALPINE_VERSION
 
-FROM php:7.1-fpm-alpine
+FROM php:7.1-fpm-alpine${ALPINE_VERSION}
 
 ARG TZ=UTC
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
