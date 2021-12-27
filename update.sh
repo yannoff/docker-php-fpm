@@ -104,7 +104,7 @@ RUN \\
     rm /usr/bin/vi && ln -s /usr/bin/vim /usr/bin/vi && \\
     \\
     # Configure PHP Runtime & system timezone
-    ln -s /usr/share/zoneinfo/\${TZ} /etc/localtime && \\
+    { rm /etc/localtime || true; } && ln -s /usr/share/zoneinfo/\${TZ} /etc/localtime && \\
     echo "[Date]" >> /usr/local/etc/php/conf.d/datetime.ini && \\
     echo "date.timezone = \${TZ}" >> /usr/local/etc/php/conf.d/datetime.ini && \\
     \\
