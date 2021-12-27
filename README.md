@@ -67,7 +67,7 @@ docker                                     \
     -t php8.0                              \
     --build-arg TZ="Europe/Rome"           \
     --build-arg PHP_EXTS="gd imap"         \
-    --build-arg APK_ADD=patch              \
+    --build-arg APK_EXTRA=patch              \
     --build-arg PHP_LIBS=laravel/installer \
     git@github.com:yannoff/docker-php-fpm.git#:8.0
 ```
