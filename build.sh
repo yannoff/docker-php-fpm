@@ -59,6 +59,10 @@ build_and_push(){
         docker tag ${image}:${version} ${image}:latest && docker push ${image}:latest
     fi
 
+    # Run a basic offenbach smoke test
+    printf "\033[01mRunning basic smoke test: \033[00m%s\n" "offenbach --version"
+    docker run --rm ${image}:${tag} offenbach --version
+
     # Clean all local images: yannoff/php-fpm:<version> yannoff/php-fpm:<version>-fpm-alpine php:<version>
     printf "\033[01mCleaning assets...\033[00m\n"
     docker rmi ${image}:${version} ${image}:${tag} php:${tag}
