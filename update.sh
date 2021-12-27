@@ -17,17 +17,8 @@ generate_dockerfile(){
         yamltools_url=https://github.com/yannoff/yamltools/releases/latest/download/yamltools
     fi
 
-    case ${version} in
-        5.5|5.6|7.0|7.1|7.2)
-            image="${version}-fpm-alpine"
-            ;;
-        latest)
-            image="fpm-alpine\${ALPINE_VERSION}"
-            ;;
-        *)
-            image="${version}-fpm-alpine\${ALPINE_VERSION}"
-            ;;
-    esac
+    image="${version}-fpm-alpine"
+
     dockerfile=./${version}/Dockerfile
     cat > ${dockerfile} <<TEMPLATE
 #
@@ -37,9 +28,9 @@ generate_dockerfile(){
 # @author  Yannoff <https://github.com/yannoff>
 # @license MIT
 #
-ARG ALPINE_VERSION=3.13
+ARG ALPINE_VERSION
 
-FROM php:${image}
+FROM php:${image}\${ALPINE_VERSION}
 
 ARG TZ=UTC
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
