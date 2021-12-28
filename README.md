@@ -46,6 +46,7 @@ _**Example:** Integration in a [docker-compose](https://docs.docker.com/compose/
 - `patch` extra package install
 - `Europe/Rome` as timezone
 - `laravel/installer` as a composer global package
+- `preview` version of composer
 
 ```yaml
 # docker-compose.yaml
@@ -57,6 +58,7 @@ fpm:
             PHP_EXTS: gd imap
             APK_EXTRA: patch
             PHP_LIBS: laravel/installer
+            COMPOSER_VERSION: preview
 ```
 
 *Alternatively, building from the command-line:*
@@ -67,8 +69,9 @@ docker                                     \
     -t php8.0                              \
     --build-arg TZ="Europe/Rome"           \
     --build-arg PHP_EXTS="gd imap"         \
-    --build-arg APK_EXTRA=patch              \
+    --build-arg APK_EXTRA=patch            \
     --build-arg PHP_LIBS=laravel/installer \
+    --build-arg COMPOSER_VERSION=preview   \
     git@github.com:yannoff/docker-php-fpm.git#:8.0
 ```
 
@@ -84,6 +87,7 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 | `APK_BASE` | Base [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time  | `bash git vim`
 | `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time | -
 | `PHP_LIBS` | PHP libraries to be installed as composer global dependencies                                | -
+| `COMPOSER_VERSION` | Major composer version to be installed                                               | `2`
 
 
 > **<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
@@ -118,6 +122,7 @@ _Pre-compiled images are built with the following default values:_
 | `TZ`       | `UTC`
 | `PHP_EXTS` | `pdo_mysql pdo_pgsql intl opcache bcmath`
 | `APK_BASE` | `bash git vim`
+| `COMPOSER_VERSION` | `2`
 
 
 ## Credits

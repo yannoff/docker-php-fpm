@@ -37,6 +37,7 @@ ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
 ARG APK_BASE="bash git vim"
 ARG APK_EXTRA
 ARG PHP_LIBS
+ARG COMPOSER_VERSION=2
 
 LABEL author="Yannoff <https://github.com/yannoff>" \\
       description="PHP-FPM with basic php extensions and composer" \\
@@ -106,7 +107,7 @@ RUN \\
     ACTUAL_SIG=\`sha384sum composer-setup.php | awk '{ printf "%s",\$1; }'\`; \\
     EXPECTED_SIG=\`curl -s https://composer.github.io/installer.sig | tr -d "\n"\`; \\
     [ "\$ACTUAL_SIG" = "\$EXPECTED_SIG" ] || echo "[composer] Error: signatures does not match!"; \\
-    php composer-setup.php --filename=composer --install-dir=/usr/bin && \\
+    php composer-setup.php --filename=composer --install-dir=/usr/bin --\${COMPOSER_VERSION} && \\
     rm composer-setup.php && \\
     \\
     # Ensure the COMPOSER_HOME directory is accessible to all users
