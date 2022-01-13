@@ -13,7 +13,7 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 - [7.4-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.4/Dockerfile)
 , [7.4](https://github.com/yannoff/docker-php-fpm/blob/master/7.4/Dockerfile)
 - [7.3-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
-, [7.3](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile)
+, [7.3](https://github.com/yannoff/docker-php-fpm/blob/master/7.3/Dockerfile) <sup>**(1)**</sup>
 - [7.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile)
 , [7.2](https://github.com/yannoff/docker-php-fpm/blob/master/7.2/Dockerfile) <sup>**(1)**</sup>
 - [7.1-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/7.1/Dockerfile)
