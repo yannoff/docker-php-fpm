@@ -124,6 +124,20 @@ _Pre-compiled images are built with the following default values:_
 | `APK_BASE` | `bash git vim`
 | `COMPOSER_VERSION` | `2`
 
+## Helper scripts
+
+A set of helper scripts are available in the [bin](bin) directory.
+
+Each of them allows to run any php command on-the-fly, including `composer` or `offenbach` commands.
+
+_For instance:_
+
+```
+bin/php8.1 offenbach install
+```
+
+> *All helpers must reside in the same directory, since the [`php`](bin/php) script is the main entrypoint for all versions.*
+
 
 ## Credits
 
