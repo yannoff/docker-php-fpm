@@ -1,0 +1,14 @@
+# vim: ts=4 sw=4 sts=4 retab
+
+name: Deploy
+
+on:
+    - push
+
+jobs:
+    deploy:
+        name: Deploy to dockerhub
+        runs-on: ubuntu-latest
+        steps:
+            - name: Run deploy script
+              run: deploy.sh
