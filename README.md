@@ -128,6 +128,18 @@ _Pre-compiled images are built with the following default values:_
 
 A set of helper scripts are available in the [bin](bin) directory.
 
+Based on the BusyBox principle, the [bin/php](bin/php) multi-call script is the main entrypoint.
+
+Thevway it works is dead simple: php version is deduced from the called script name (defaults to 8.1):
+
+```
+cd $HOMR/bin
+ln -s php php7.4
+php7.4 --version
+(TODO: Print command result)
+```
+
+
 Each of them allows to run any php command on-the-fly, including `composer` or `offenbach` commands.
 
 _For instance:_
