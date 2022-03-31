@@ -34,10 +34,11 @@ deploy(){
 # Usage: build <version>
 #
 build(){
-    local args status version=${1} context=${version}/ logfile=${version}/build.log from=${version}-fpm-alpine
+    local args status version=${1}
+    local context=${version}/ logfile=${version}/build.log from=${version}-fpm-alpine
 
     # Cleanup previous log file
-    rm ${logfile}
+    rm ${logfile} 2>/dev/null || true
 
     # Ensure the original php image is up to date
     printf "\033[01mPulling php:%s base image...\033[00m\n" "${from}"
@@ -70,7 +71,8 @@ build(){
 # Usage: push <version>
 #
 push(){
-    local latest status version=${1} longtag=${version}-fpm-alpine
+    local latest status version=${1}
+    local longtag=${version}-fpm-alpine
 
     # Push yannoff/php-fpm:<version> image
     printf "\033[01mPushing image %s:%s...\033[00m\n" "${image}" "${version}"
