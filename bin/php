@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# @package php/alpine/fpm
+# @author  Yannoff <https://github.com/yannoff>
+# @license MIT
+#
+
+image=yannoff/php-fpm
+
+called=$(basename $0)
+version=${called//php/}
+
+_is_command() {
+    docker run --rm --tty ${image}:${version:-8.1} which "$1" 2>&1 >/dev/null
+    return $?
+}
+
+_exec() {
+    [ -n "${DEBUG}" ] && echo "$*"
+    "$@"
+}
+
+if [ "$#" -gt "0" ]
+then
+    # Unless a known command is invoked, assume we want "php"
+    # This allow calling the script in the form: bin/php -a
+    if [ "${1#-}" != "$1" ] || ! _is_command "${1}"
+    then
+        set -- php "$@"
+    fi
+else
+    # If no command specified, assume we want a bash session
+    set -- bash
+fi
+
+args=()
+
+# Remove container after run
+args+=( --rm )
+
+# Run container in interactive mode
+args+=( --interactive )
+
+# Attach process to the TTY
+args+=( --tty )
+
+# Run as standard, low-priviledged user
+args+=( -u $(id -u):$(id -g) )
+
+# Mount user/group accounts as read-only
+args+=( -v /etc/group:/etc/group:ro )
+args+=( -v /etc/passwd:/etc/passwd:ro )
+args+=( -v /etc/shadow:/etc/shadow:ro )
+
+# Mount user's composer home if it exists
+[ -d $HOME/.composer ] && args+=( -v $HOME/.composer:/.composer )
+
+# Mount user's ssh directory if it exists
+[ -d $HOME/.ssh ] && args+=( -v $HOME/.ssh:$HOME/.ssh )
+
+_exec docker run -v ${PWD}:/app -w /app "${args[@]}" ${image}:${version:-8.1} "$@"
