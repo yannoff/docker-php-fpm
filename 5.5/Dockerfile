@@ -53,7 +53,7 @@ RUN \
     apk add --no-cache --virtual build-deps ${BUILD_DEPS} && \
     \
     # Install PHP extensions
-    install-php-extensions ${PHP_EXTS} && \
+    install-php-extensions @composer-${COMPOSER_VERSION} ${PHP_EXTS} && \
     \
     # Install support for locales
     # @see https://github.com/gliderlabs/docker-alpine/issues/144
@@ -87,16 +87,6 @@ RUN \
     { rm /etc/localtime || true; } && ln -s /usr/share/zoneinfo/${TZ} /etc/localtime && \
     echo "[Date]" >> /usr/local/etc/php/conf.d/datetime.ini && \
     echo "date.timezone = ${TZ}" >> /usr/local/etc/php/conf.d/datetime.ini && \
-    \
-    # Install composer
-    #  - Download composer-setup.php & check for file integrity
-    #  - Run composer installation script then remove it
-    curl -sSL https://getcomposer.org/installer -o composer-setup.php; \
-    ACTUAL_SIG=`sha384sum composer-setup.php | awk '{ printf "%s",$1; }'`; \
-    EXPECTED_SIG=`curl -s https://composer.github.io/installer.sig | tr -d "\n"`; \
-    [ "$ACTUAL_SIG" = "$EXPECTED_SIG" ] || echo "[composer] Error: signatures does not match!"; \
-    php composer-setup.php --filename=composer --install-dir=/usr/bin --${COMPOSER_VERSION} && \
-    rm composer-setup.php && \
     \
     # Ensure the COMPOSER_HOME directory is accessible to all users
     mkdir $COMPOSER_HOME && chmod 0777 $COMPOSER_HOME; \
