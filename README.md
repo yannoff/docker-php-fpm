@@ -88,9 +88,13 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 | `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time | -
 | `PHP_LIBS` | PHP libraries to be installed as composer global dependencies                                | -
 | `COMPOSER_VERSION` | Major composer version to be installed                                               | `2`
+| `OFFENBACH_VERSION`     | Alternative [offenbach](https://github.com/yannoff/offenbach) version to be installed  <sup>**(4)**</sup> | `latest`
+| `OFFENBACH_FILENAME`    | Alternative name for the [offenbach](https://github.com/yannoff/offenbach) executable                     | `offenbach`
+| `OFFENBACH_INSTALL_DIR` | Install dir for the [offenbach](https://github.com/yannoff/offenbach) executable                          | `/usr/bin`
 
 
-> **<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._
+> **<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._<br/>
+> **<sup>(4)</sup>** _The version must be an **exact** version, eg: `1.6.2`. If left empty, the `latest` release will be used._
 
 
 ### Using base images
