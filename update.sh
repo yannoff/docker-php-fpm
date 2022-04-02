@@ -8,14 +8,6 @@
 generate_dockerfile(){
     local dockerfile version
     version=$1
-    # Handle yamltools version
-    # @see https://github.com/yannoff/yamltools/commit/0abfdf7c727db62062a24d2e3ec351d38abcd3f6
-    if [ ${version} = "5.5" ]
-    then
-        yamltools_url=https://github.com/yannoff/yamltools/releases/download/1.3.3/yamltools
-    else
-        yamltools_url=https://github.com/yannoff/yamltools/releases/latest/download/yamltools
-    fi
 
     image="${version}-fpm-alpine"
 
@@ -38,6 +30,10 @@ ARG APK_BASE="bash git vim"
 ARG APK_EXTRA
 ARG PHP_LIBS
 ARG COMPOSER_VERSION=2
+
+ARG OFFENBACH_VERSION
+ARG OFFENBACH_FILENAME
+ARG OFFENBACH_INSTALL_DIR=/usr/bin
 
 LABEL author="Yannoff <https://github.com/yannoff>" \\
       description="PHP-FPM with basic php extensions and composer" \\
@@ -64,6 +60,9 @@ RUN \\
     echo -e "\\033[01mPHP_EXTS:\\033[01;33m \${PHP_EXTS}\\033[00m"; \\
     echo -e "\\033[01mPHP_LIBS:\\033[01;33m \${PHP_LIBS}\\033[00m"; \\
     echo -e "\\033[01mCOMPOSER_VERSION:\\033[01;33m \${COMPOSER_VERSION}\\033[00m"; \\
+    echo -e "\\033[01mOFFENBACH_VERSION:\\033[01;33m \${OFFENBACH_VERSION}\\033[00m"; \\
+    echo -e "\\033[01mOFFENBACH_FILENAME:\\033[01;33m \${OFFENBACH_FILENAME}\\033[00m"; \\
+    echo -e "\\033[01mOFFENBACH_INSTALL_DIR:\\033[01;33m \${OFFENBACH_INSTALL_DIR}\\033[00m"; \\
     echo -e "\\033[01m******************************************************************************\\033[00m"; \\
     \\
     # Install basic packages
@@ -114,14 +113,9 @@ RUN \\
     # Ensure the COMPOSER_HOME directory is accessible to all users
     mkdir \$COMPOSER_HOME && chmod 0777 \$COMPOSER_HOME; \\
     \\
-    # Install yamltools standalone (ensure BC with any php version)
-    curl -Lo /usr/local/bin/yamltools ${yamltools_url} && chmod +x /usr/local/bin/yamltools && \\
     # Install offenbach
-    cd /tmp && git clone https://github.com/yannoff/offenbach.git && cd offenbach && \\
-    # Use the latest release version instead of potentially unstable master
-    offenbach_version=\$(git describe --tags --abbrev=0) && git checkout \${offenbach_version} && \\
-    ./configure --bindir /usr/local/bin bin/offenbach && make && make install && \\
-    cd /tmp && rm -rf offenbach && \\
+    url=https://github.com/yannoff/offenbach/releases/latest/download/install.sh && \\
+    curl -SL -s -o - \${url} | bash && \\
     \\
     # Install on-demand global PHP packages, if appropriate
     if [ -n "\${PHP_LIBS}" ]; \\
