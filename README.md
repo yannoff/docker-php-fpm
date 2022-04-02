@@ -26,7 +26,7 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 , [5.5](https://github.com/yannoff/docker-php-fpm/blob/master/5.5/Dockerfile) <sup>**(1)**</sup> <sup>**(2)**</sup>
 
 > <sup>**(1)**</sup> _Those PHP versions have now reached their [EOL](https://www.php.net/eol.php)._<br/>
-> <sup>**(2)**</sup> _[yamltools](https://github.com/yannoff/yamltools) version frozen to `1.3.3` (see [yamltools#0abfdf7](https://github.com/yannoff/yamltools/commit/0abfdf7c727db62062a24d2e3ec351d38abcd3f6))._
+
 
 ## Usage
 
@@ -80,22 +80,22 @@ docker                                     \
 
 The following [build arguments](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg) are available:
 
-| Build arg  | Description                                                                                  | Defaults
-|---         |---                                                                                           |---
-| `TZ`       | The timezone to use for the container                                                        | `UTC`
-| `PHP_EXTS` | PHP extensions to be installed at build time <sup>**(3)**</sup>                              | `pdo_mysql pdo_pgsql intl opcache bcmath`
-| `APK_BASE` | Base [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time  | `bash git vim`
-| `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed at build time | -
-| `PHP_LIBS` | PHP libraries to be installed as composer global dependencies                                | -
-| `COMPOSER_VERSION` | Specific [composer](https://getcomposer.org/download/) version to be installed  <sup>**(4)**</sup>                                                  | `2`
-| `OFFENBACH_VERSION`     | Alternative [offenbach](https://github.com/yannoff/offenbach) version to be installed  <sup>**(5)**</sup> | `latest`
+| Build arg  | Description                                                                    | Defaults
+|---         |---                                                                             |---
+| `TZ`       | The timezone to use for the container                                          | `UTC`
+| `PHP_EXTS` | PHP extensions to be installed <sup>**(2)**</sup>                              | `pdo_mysql pdo_pgsql intl opcache bcmath`
+| `APK_BASE` | Base [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed  | `bash git vim`
+| `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed | -
+| `PHP_LIBS` | PHP libraries to be installed as composer global dependencies                  | -
+| `COMPOSER_VERSION` | Specific [composer](https://getcomposer.org/download/) version to be installed  <sup>**(3)**</sup>                                                  | `2`
+| `OFFENBACH_VERSION`     | Alternative [offenbach](https://github.com/yannoff/offenbach) version to be installed  <sup>**(4)**</sup> | `latest`
 | `OFFENBACH_FILENAME`    | Alternative name for the [offenbach](https://github.com/yannoff/offenbach) executable                     | `offenbach`
 | `OFFENBACH_INSTALL_DIR` | Install dir for the [offenbach](https://github.com/yannoff/offenbach) executable                          | `/usr/bin`
 
 
-> **<sup>(3)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._<br/>
-> **<sup>(4)</sup>** _May be a major, full or nightly version. Example values: `2`, `2.2.9` or `preview`._<br/>
-> **<sup>(5)</sup>** _The version must be an **exact** version, eg: `1.6.2`. If left empty, the `latest` release will be used._
+> **<sup>(2)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._<br/>
+> **<sup>(3)</sup>** _May be a major, full or nightly version. Example values: `2`, `2.2.9` or `preview`._<br/>
+> **<sup>(4)</sup>** _The version must be an **exact** version, eg: `1.6.2`. If left empty, the `latest` release will be used._
 
 
 ### Using base images
