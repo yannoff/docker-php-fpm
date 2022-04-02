@@ -1,2 +1,3 @@
 TZ=Europe/Paris
 PHP_EXTS=intl opcache
+COMPOSER_VERSION=2.2.11
