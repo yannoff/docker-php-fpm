@@ -55,7 +55,7 @@ ENV PATH \$COMPOSER_HOME/vendor/bin:\$PATH
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 
 RUN \\
-    BUILD_DEPS="autoconf coreutils gcc libc-dev make patch"; \\
+    BUILD_DEPS="autoconf cmake coreutils gcc libc-dev make patch"; \\
     \\
     echo -e "\\033[01m******************************* Build arguments ******************************\\033[00m"; \\
     echo -e "\\033[01mTZ:\\033[01;33m \${TZ}\\033[00m"; \\
