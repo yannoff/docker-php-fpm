@@ -75,7 +75,7 @@ RUN \\
     apk add --no-cache --virtual build-deps \${BUILD_DEPS} && \\
     \\
     # Install PHP extensions
-    install-php-extensions @composer-\${COMPOSER_VERSION} \${PHP_EXTS} && \\
+    install-php-extensions @fix_letsencrypt @composer-\${COMPOSER_VERSION} \${PHP_EXTS} && \\
     \\
     # Install support for locales
     # @see https://github.com/gliderlabs/docker-alpine/issues/144
