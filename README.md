@@ -123,10 +123,11 @@ docker                  \
 _Pre-compiled images are built with the following default values:_
 
 | Build arg  | Value
-|---         |---   
-| `TZ`       | `Europe/Paris`
-| `PHP_EXTS` | `intl opcache`
-| `APK_BASE` | `bash git vim`
+|---                 |---
+| `TZ`               | `Europe/Paris`
+| `PHP_EXTS`         | `intl opcache`
+| `APK_BASE`         | `bash git vim`
+| `APK_EXTRA`        | `openssh`
 | `COMPOSER_VERSION` | `2`
 
 
