@@ -104,7 +104,7 @@ push(){
 # If no version specified, build and push all versions
 if [ $# -eq 0 ]
 then
-    set -- 5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1
+    set -- 5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2-rc
 fi
 
 # Ensure the php extension installer image is up to date
