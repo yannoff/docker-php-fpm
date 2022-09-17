@@ -11,6 +11,8 @@ generate_dockerfile(){
 
     image="${version}-fpm-alpine"
 
+    [ "${version}" = "5.5" ] && curl_flags='-ksSL' || curl_flags='-sSL'
+
     dockerfile=./${version}/Dockerfile
     cat > ${dockerfile} <<TEMPLATE
 #
@@ -75,7 +77,13 @@ RUN \\
     apk add --no-cache --virtual build-deps \${BUILD_DEPS} && \\
     \\
     # Install PHP extensions
-    install-php-extensions @composer-\${COMPOSER_VERSION} \${PHP_EXTS} && \\
+    install-php-extensions \${PHP_EXTS} && \\
+    \\
+    # Install composer
+    curl ${curl_flags} https://getcomposer.org/download/\${COMPOSER_VERSION}/composer.phar -o /usr/bin/composer && \\
+    chmod +x /usr/bin/composer && \\
+    echo -ne "\\033[01mComposer installed\\033[00m: " && \\
+    composer --version && \\
     \\
     # Install support for locales
     # @see https://github.com/gliderlabs/docker-alpine/issues/144
