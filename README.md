@@ -48,7 +48,7 @@ _**Example:** Integration in a [docker-compose](https://docs.docker.com/compose/
 - `patch` extra package install
 - `Europe/Rome` as timezone
 - `laravel/installer` as a composer global package
-- `preview` version of composer
+- `latest-preview` version of composer
 
 ```yaml
 # docker-compose.yaml
@@ -60,7 +60,7 @@ fpm:
             PHP_EXTS: gd imap
             APK_EXTRA: patch
             PHP_LIBS: laravel/installer
-            COMPOSER_VERSION: preview
+            COMPOSER_VERSION: latest-preview
 ```
 
 *Alternatively, building from the command-line:*
@@ -73,7 +73,7 @@ docker                                     \
     --build-arg PHP_EXTS="gd imap"         \
     --build-arg APK_EXTRA=patch            \
     --build-arg PHP_LIBS=laravel/installer \
-    --build-arg COMPOSER_VERSION=preview   \
+    --build-arg COMPOSER_VERSION=latest-preview   \
     git@github.com:yannoff/docker-php-fpm.git#:8.0
 ```
 
@@ -96,8 +96,8 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 
 
 > **<sup>(2)</sup>** _See the [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) repository for the full list of supported extensions._<br/>
-> **<sup>(3)</sup>** _May be a major, full or nightly version. Example values: `2`, `2.2.9` or `preview`._<br/>
-> **<sup>(4)</sup>** _The version must be an **exact** version, eg: `1.6.2`. If left empty, the `latest` release will be used._
+> **<sup>(3)</sup>** _May be `latest-preview`, `latest-stable`, or an exact version - eg: `2.4.0`._<br/>
+> **<sup>(4)</sup>** _The version **must be** an exact version, eg: `1.6.2`. If left empty, the `latest` release will be used._
 
 
 ### Using base images
@@ -130,7 +130,7 @@ _Pre-compiled images are built with the following default values:_
 | `PHP_EXTS`         | `intl opcache`
 | `APK_BASE`         | `bash git vim`
 | `APK_EXTRA`        | `openssh`
-| `COMPOSER_VERSION` | `2`
+| `COMPOSER_VERSION` | `2.2.18`
 
 
 ## Credits
