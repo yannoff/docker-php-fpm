@@ -41,8 +41,8 @@ args+=( --rm )
 # Run container in interactive mode
 args+=( --interactive )
 
-# Attach process to the TTY
-args+=( --tty )
+# Allocate a pseudo TTY, only if no piped input
+[ -p /dev/stdin ] || args+=( --tty )
 
 # Run as standard, low-priviledged user
 args+=( -u $(id -u):$(id -g) )
