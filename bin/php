@@ -11,7 +11,7 @@ called=$(basename $0)
 version=${called//php/}
 
 _is_command() {
-    docker run --rm --tty ${image}:${version:-8.1} which "$1" 2>&1 >/dev/null
+    docker run --rm --tty ${image}:${version:-8.2} which "$1" 2>&1 >/dev/null
     return $?
 }
 
@@ -58,4 +58,4 @@ args+=( -v /etc/shadow:/etc/shadow:ro )
 # Mount user's ssh directory if it exists
 [ -d $HOME/.ssh ] && args+=( -v $HOME/.ssh:$HOME/.ssh )
 
-_exec docker run -v ${PWD}:/app -w /app "${args[@]}" ${image}:${version:-8.1} "$@"
+_exec docker run -v ${PWD}:/app -w /app "${args[@]}" ${image}:${version:-8.2} "$@"
