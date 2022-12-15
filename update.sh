@@ -145,7 +145,7 @@ TEMPLATE
 if [ $# -eq 0 ]
 then
     # If no version specified, update all
-    set -- 5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2-rc
+    set -- $(find . -type d -name '[5-9]\.[0-9]' | sort | sed 's#^./##' | xargs)
 fi
 
 for v in "$@"
