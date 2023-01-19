@@ -22,14 +22,20 @@ _exec() {
 
 if [ "$#" -gt "0" ]
 then
-    # Unless a known command is invoked, assume we want "php"
+    # Counter bash parameters expansion behavior: if the first arg
+    # is an existing command, it will resolve to its full-path on
+    # the host machine
+    basecmd=$(basename ${1})
+
+    # When the script is just passed an option, prefix it with "php"
     # This allow calling the script in the form: bin/php -a
-    if [ "${1#-}" != "$1" ] || ! _is_command "${1}"
+    # On the other hand, existing commands must be invoked as-is
+    if [ "${1#-}" != "$1" ] || ! _is_command "${basecmd}"
     then
         set -- php "$@"
     fi
 else
-    # If no command specified, assume we want a bash session
+    # If invoked without args, assume we want a bash session
     set -- bash
 fi
 
