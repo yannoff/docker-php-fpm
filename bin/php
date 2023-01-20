@@ -10,8 +10,13 @@ image=yannoff/php-fpm
 called=$(basename $0)
 version=${called//php/}
 
+if [ -z "${version}" ]
+then
+    version=${PHP_VERSION:-8.2}
+fi
+
 _is_command() {
-    docker run --rm --tty ${image}:${version:-8.2} which "$1" 2>&1 >/dev/null
+    docker run --rm --tty ${image}:${version} which "$1" 2>&1 >/dev/null
     return $?
 }
 
