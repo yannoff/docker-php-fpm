@@ -154,7 +154,7 @@ The version must be one of the following:
  `8.1`,
  `8.2`
 
-If invoked as `php`, the latest PHP GA version will be used (currently `8.2`).
+> _If invoked without any version suffix, the default PHP version will be used: either the `PHP_VERSION` environment variable (if set), the latest PHP GA release (currently 8.2) otherwise._
 
 ### Usage examples
 
@@ -168,9 +168,9 @@ Zend Engine v3.4.0, Copyright (c) Zend Technologies
     with Zend OPcache v7.4.28, Copyright (c), by Zend Technologies
 ```
 
-> _The following examples are given assuming that:_
-> - _The `php` multi-call script is in one of the `$PATH` dirs_
-> - _A symlink to it has been created for each php version_
+_The following examples are given assuming that:_
+- _The `php` multi-call script is in one of the `$PATH` dirs_
+- _A symlink to it has been created for each php version_
 
 #### Install offenbach dependencies in the current dir
 
