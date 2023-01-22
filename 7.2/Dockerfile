@@ -39,15 +39,15 @@ RUN \
     BUILD_DEPS="autoconf cmake coreutils gcc libc-dev make patch"; \
     \
     echo -e "\033[01m******************************* Build arguments ******************************\033[00m"; \
-    echo -e "\033[01mTZ:\033[01;33m ${TZ}\033[00m"; \
-    echo -e "\033[01mAPK_BASE:\033[01;33m ${APK_BASE}\033[00m"; \
-    echo -e "\033[01mAPK_EXTRA:\033[01;33m ${APK_EXTRA}\033[00m"; \
-    echo -e "\033[01mPHP_EXTS:\033[01;33m ${PHP_EXTS}\033[00m"; \
-    echo -e "\033[01mPHP_LIBS:\033[01;33m ${PHP_LIBS}\033[00m"; \
-    echo -e "\033[01mCOMPOSER_VERSION:\033[01;33m ${COMPOSER_VERSION}\033[00m"; \
-    echo -e "\033[01mOFFENBACH_VERSION:\033[01;33m ${OFFENBACH_VERSION}\033[00m"; \
-    echo -e "\033[01mOFFENBACH_FILENAME:\033[01;33m ${OFFENBACH_FILENAME}\033[00m"; \
-    echo -e "\033[01mOFFENBACH_INSTALL_DIR:\033[01;33m ${OFFENBACH_INSTALL_DIR}\033[00m"; \
+    echo -e "\033[01;34mTZ:\033[01;33m ${TZ}\033[00m"; \
+    echo -e "\033[01;34mAPK_BASE:\033[01;33m ${APK_BASE}\033[00m"; \
+    echo -e "\033[01;34mAPK_EXTRA:\033[01;33m ${APK_EXTRA}\033[00m"; \
+    echo -e "\033[01;34mPHP_EXTS:\033[01;33m ${PHP_EXTS}\033[00m"; \
+    echo -e "\033[01;34mPHP_LIBS:\033[01;33m ${PHP_LIBS}\033[00m"; \
+    echo -e "\033[01;34mCOMPOSER_VERSION:\033[01;33m ${COMPOSER_VERSION}\033[00m"; \
+    echo -e "\033[01;34mOFFENBACH_VERSION:\033[01;33m ${OFFENBACH_VERSION}\033[00m"; \
+    echo -e "\033[01;34mOFFENBACH_FILENAME:\033[01;33m ${OFFENBACH_FILENAME}\033[00m"; \
+    echo -e "\033[01;34mOFFENBACH_INSTALL_DIR:\033[01;33m ${OFFENBACH_INSTALL_DIR}\033[00m"; \
     echo -e "\033[01m******************************************************************************\033[00m"; \
     \
     # Install basic packages
@@ -106,7 +106,7 @@ RUN \
     \
     # Install offenbach
     url=https://github.com/yannoff/offenbach/releases/latest/download/install.sh && \
-    curl -SL -s -o - ${url} | bash && \
+    curl -SL -s -o - ${url} | bash 2>&1 && \
     \
     # Install on-demand global PHP packages, if appropriate
     if [ -n "${PHP_LIBS}" ]; \
