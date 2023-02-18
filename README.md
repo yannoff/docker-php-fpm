@@ -140,61 +140,7 @@ _Pre-compiled images are built with the following default values:_
 
 ## Helper scripts
 
-A set of helper scripts are available in the [bin](bin) directory.
-
-Each of them allows to run any php command on-the-fly, including `composer` or `offenbach` commands.
-
-Based on the BusyBox principle, the [bin/php](bin/php) multi-call script is the main entrypoint.
-
-The way it works is dead simple: php version is deduced from the called script name, as a consequence each `php<version>` symlink must point to the main [`php`](bin/php) entrypoint script.
-
-The version must be one of the following:
- `5.5`,
- `5.6`,
- `7.0`,
- `7.1`,
- `7.2`,
- `7.3`,
- `7.4`,
- `8.0`,
- `8.1`,
- `8.2`
-
-> _If invoked without any version suffix, the default PHP version will be used: either the `PHP_VERSION` environment variable (if set), the latest PHP GA release (currently 8.2) otherwise._
-
-### Usage examples
-
-```bash
-$ cd $HOME/bin
-$ ln -s php php7.4
-$ php7.4 --version
-PHP 7.4.28 (cli) (built: Mar 29 2022 03:52:02) ( NTS )
-Copyright (c) The PHP Group
-Zend Engine v3.4.0, Copyright (c) Zend Technologies
-    with Zend OPcache v7.4.28, Copyright (c), by Zend Technologies
-```
-
-_The following examples are given assuming that:_
-- _The `php` multi-call script is in one of the `$PATH` dirs_
-- _A symlink to it has been created for each php version_
-
-#### Install offenbach dependencies in the current dir
-
-```bash
-php8.1 offenbach install
-```
-
-#### Open a php interactive command prompt
-
-```bash
-php7.4 -a
-```
-
-#### Open a bash session
-
-```bash
-php8.0
-```
+### _The `php` multi-call script is now a fully-featured project: [`PAW (Php.Any.Where)`](https://github.com/yannoff/p-a-w)._
 
 
 ## Credits
