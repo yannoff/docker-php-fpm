@@ -104,7 +104,7 @@ push(){
 # If no version specified, build and push all versions
 if [ $# -eq 0 ]
 then
-    set -- $(find . -type d -name '[5-9]\.[0-9]' | sort | sed 's#^./##' | xargs)
+    set -- $(find . -type d -name '[5-9]\.[0-9]*' | sort | sed 's#^./##' | xargs)
 fi
 
 # If a build is implied, ensure the php extension installer image is up to date
