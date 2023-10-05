@@ -7,7 +7,7 @@
 #
 ARG ALPINE_VERSION
 
-FROM php:5.5-fpm-alpine${ALPINE_VERSION}
+FROM yannoff/php-fpm::5.5-base${ALPINE_VERSION}
 
 ARG TZ=UTC
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
@@ -67,31 +67,6 @@ RUN \
     chmod +x /usr/bin/composer && \
     echo -ne "\033[01mComposer installed\033[00m: " && \
     composer --version && \
-    \
-    # Install support for locales
-    # @see https://github.com/gliderlabs/docker-alpine/issues/144
-    apk add --no-cache --virtual .locale-run-deps libintl && \
-    apk add --no-cache --virtual .locale-build-deps cmake make musl-dev gcc gettext-dev && \
-    cd /tmp && curl --output musl-locales-master.zip https://codeload.github.com/rilian-la-te/musl-locales/zip/master && \
-    unzip musl-locales-master.zip && cd musl-locales-master; \
-    cmake . && make && make install; \
-    cd .. && rm -rf /tmp/musl-locales-master*; \
-    \
-    # Fix ICONV library implementation
-    # @see https://github.com/docker-library/php/issues/240
-    # (could possibly be replaced by:
-    #   apk add gnu-libiconv --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted; \
-    # @see https://github.com/wallabag/docker/pull/158/files
-    # )
-    apk add --no-cache --virtual .iconv-build-deps file libtool && \
-    curl -sSL http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz | tar -xz -C . && \
-    cd libiconv-1.14 && \
-    ./configure --prefix=/usr/local && \
-    curl -sSL https://raw.githubusercontent.com/mxe/mxe/7e231efd245996b886b501dad780761205ecf376/src/libiconv-1-fixes.patch | patch -p1 -u  && \
-    make && make install && \
-    libtool --finish /usr/local/lib; \
-    cd .. && \
-    rm -rf libiconv-1.14; \
     \
     # Use VIM for VI (instead of the poorly implemented BusyBox equivalent)
     rm /usr/bin/vi && ln -s /usr/bin/vim /usr/bin/vi && \
