@@ -91,7 +91,7 @@ The following [build arguments](https://docs.docker.com/engine/reference/command
 | `APK_BASE` | Base [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed  | `bash git vim`
 | `APK_EXTRA`| Extra [alpine](https://pkgs.alpinelinux.org/packages) packages to be installed | -
 | `PHP_LIBS` | PHP libraries to be installed as composer global dependencies                  | -
-| `COMPOSER_VERSION` | Specific [composer](https://getcomposer.org/download/) version to be installed  <sup>**(3)**</sup>             | `2.2.18`
+| `COMPOSER_VERSION` | Specific [composer](https://getcomposer.org/download/) version to be installed  <sup>**(3)**</sup>             | `2.2.22`
 | `OFFENBACH_VERSION`     | Alternative [offenbach](https://github.com/yannoff/offenbach) version to be installed  <sup>**(4)**</sup> | `latest`
 | `OFFENBACH_FILENAME`    | Alternative name for the [offenbach](https://github.com/yannoff/offenbach) executable                     | `offenbach`
 | `OFFENBACH_INSTALL_DIR` | Install dir for the [offenbach](https://github.com/yannoff/offenbach) executable                          | `/usr/bin`
@@ -132,7 +132,7 @@ _Pre-compiled images are built with the following default values:_
 | `PHP_EXTS`         | `intl opcache`
 | `APK_BASE`         | `bash git vim`
 | `APK_EXTRA`        | `openssh`
-| `COMPOSER_VERSION` | `2.2.18`
+| `COMPOSER_VERSION` | `2.2.22`
 
 ## Helper scripts
 
