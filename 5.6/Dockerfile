@@ -101,6 +101,10 @@ RUN \
     echo "[Date]" >> /usr/local/etc/php/conf.d/datetime.ini && \
     echo "date.timezone = ${TZ}" >> /usr/local/etc/php/conf.d/datetime.ini && \
     \
+    # Additional PHP Config
+    echo "[PHAR]" >> /usr/local/etc/php/conf.d/phar.ini && \
+    echo "phar.readonly = Off" >> /usr/local/etc/php/conf.d/phar.ini && \
+    \
     # Ensure the COMPOSER_HOME directory is accessible to all users
     mkdir $COMPOSER_HOME && chmod 0777 $COMPOSER_HOME; \
     \
