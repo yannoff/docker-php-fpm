@@ -1,4 +1,4 @@
 TZ=Europe/Paris
 PHP_EXTS=intl opcache
 APK_EXTRA=openssh
-COMPOSER_VERSION=2.2.22
+COMPOSER_VERSION=2.2.24
