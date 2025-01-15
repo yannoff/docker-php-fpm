@@ -7,7 +7,7 @@
 #
 ARG ALPINE_VERSION
 
-FROM php:8.4-rc-fpm-alpine${ALPINE_VERSION}
+FROM php:8.4-fpm-alpine${ALPINE_VERSION}
 
 ARG TZ=UTC
 ARG PHP_EXTS="pdo_mysql pdo_pgsql intl opcache bcmath"
