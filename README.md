@@ -6,8 +6,8 @@ A [PHP-FPM](http://php.net/manual/fr/install.fpm.php "PHP FastCGI Process Manage
 
 ## Available tags
 
-- [8.4-rc-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/8.4-rc/Dockerfile)
-, [8.4-rc](https://github.com/yannoff/docker-php-fpm/blob/master/8.4-rc/Dockerfile)
+- [8.4-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/8.4/Dockerfile)
+, [8.4](https://github.com/yannoff/docker-php-fpm/blob/master/8.4/Dockerfile)
 - [8.3-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/8.3/Dockerfile)
 , [8.3](https://github.com/yannoff/docker-php-fpm/blob/master/8.3/Dockerfile)
 - [8.2-fpm-alpine](https://github.com/yannoff/docker-php-fpm/blob/master/8.2/Dockerfile)
