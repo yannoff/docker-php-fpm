@@ -24,7 +24,7 @@ get_latest_numver(){
 #
 deploy(){
     local version=${1}
-    build ${version} && push ${version}
+    build ${version} && push ${version} && cleanup ${version}
     return $?
 }
 
@@ -96,9 +96,30 @@ push(){
         docker push ${image}:latest
     fi
 
-    # Clean all local images: yannoff/php-fpm:<version> yannoff/php-fpm:<version>-fpm-alpine php:<version>
+    return 0 #TODO return status
+}
+
+#
+# Remove all local images: yannoff/php-fpm:<version> yannoff/php-fpm:<version>-fpm-alpine php:<version>
+#
+# Usage: cleanup <version>
+#
+cleanup(){
+    local latest status version=${1}
+    local longtag=${version}-fpm-alpine
+
     printf "\033[01mCleaning assets...\033[00m\n"
-    docker rmi ${image}:${version} ${image}:${longtag} ${image}:latest php:${longtag}
+    docker rmi ${image}:${version} ${image}:${longtag} php:${longtag}
+
+    # If version is the latest, then remove also the yannoff/php-fpm:latest image
+    latest=$(get_latest_numver)
+    if [ "${version}" == "${latest}" ]
+    then
+        printf "\033[01mCleaning image %s:latest...\033[00m\n" "${image}"
+        docker rmi ${image}:latest
+    fi
+
+    return 0 #TODO return status
 }
 
 # If no version specified, build and push all versions
