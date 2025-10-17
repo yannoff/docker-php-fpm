@@ -112,8 +112,12 @@ cleanup(){
     local longtag=${version}-fpm-alpine
 
     printf "\033[01mCleaning assets...\033[00m\n"
-    docker rmi ${image}:${version} ${image}:${longtag} php:${longtag}
-    let status+=$?
+    for i in ${image}:${version} ${image}:${longtag} php:${longtag}
+    do
+        printf "\033[01mCleaning %s image...\033[00m\n" ${i}
+        docker rmi ${i}
+        let status+=$?
+    done
 
     # If version is the latest, then remove also the yannoff/php-fpm:latest image
     latest=$(get_latest_numver)
