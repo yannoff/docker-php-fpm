@@ -143,6 +143,9 @@ fi
 # Process each version
 for v in "$@"
 do
+    # Clean assets on interrupt
+    trap "cleanup ${v}; exit 0" SIGINT SIGTERM
+
     printf "\033[01m[%s] Processing version %s...\033[00m\n" "${job}" "${v}"
     ${job} ${v}
 done
