@@ -34,7 +34,7 @@ deploy(){
 # Usage: build <version>
 #
 build(){
-    local args status version=${1}
+    local args status=1 version=${1}
     local context=${version}/ logfile=${version}/build.log from=${version}-fpm-alpine
 
     # Cleanup previous log file
@@ -56,11 +56,14 @@ build(){
 
     status=$?
 
-    # Run a basic offenbach smoke test
-    printf "\033[01mRunning basic smoke test: \033[00m%s\n" "offenbach --version"
-    docker run --rm ${image}:${version} offenbach --version
+    # If build succeeded, run a basic offenbach smoke test
+    if [ "${status}" -eq 0 ]
+    then
+        printf "\033[01mRunning basic smoke test: \033[00m%s\n" "offenbach --version"
+        docker run --rm ${image}:${version} offenbach --version
 
-    printf "Building image \033[01m%s:%s\033[00m ...\033[01;32mOK\033[00m\n" "${image}" "${version}"
+        printf "Building image \033[01m%s:%s\033[00m ...\033[01;32mOK\033[00m\n" "${image}" "${version}"
+    fi
 
     return ${status}
 }
