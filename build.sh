@@ -71,20 +71,22 @@ build(){
 # Usage: push <version>
 #
 push(){
-    local latest status version=${1}
+    local latest status=0 version=${1}
     local longtag=${version}-fpm-alpine
 
     # Push yannoff/php-fpm:<version> image
     printf "\033[01mPushing image %s:%s...\033[00m\n" "${image}" "${version}"
     docker push ${image}:${version}
+    let status+=$?
 
-    # Create & push the yannoff/php-fpm:<version>-fpm-alpine alias
+    # Create the yannoff/php-fpm:<version>-fpm-alpine alias
     printf "\033[01mCreating shortcut image %s:%s...\033[00m\n" "${image}" "${longtag}"
     docker tag ${image}:${version} ${image}:${longtag}
 
     # Push yannoff/php-fpm:<version>-fpm-alpine image
     printf "\033[01mPushing image %s:%s...\033[00m\n" "${image}" "${longtag}"
     docker push ${image}:${longtag}
+    let status+=$?
 
     # If the built version is the latest, then push the yannoff/php-fpm:latest alias
     latest=$(get_latest_numver)
@@ -94,9 +96,10 @@ push(){
         docker tag ${image}:${version} ${image}:latest
         printf "\033[01mPushing shortcut image %s:latest...\033[00m\n" "${image}"
         docker push ${image}:latest
+        let status+=$?
     fi
 
-    return 0 #TODO return status
+    return ${status}
 }
 
 #
@@ -105,11 +108,12 @@ push(){
 # Usage: cleanup <version>
 #
 cleanup(){
-    local latest status version=${1}
+    local latest status=0 version=${1}
     local longtag=${version}-fpm-alpine
 
     printf "\033[01mCleaning assets...\033[00m\n"
     docker rmi ${image}:${version} ${image}:${longtag} php:${longtag}
+    let status+=$?
 
     # If version is the latest, then remove also the yannoff/php-fpm:latest image
     latest=$(get_latest_numver)
@@ -117,9 +121,10 @@ cleanup(){
     then
         printf "\033[01mCleaning image %s:latest...\033[00m\n" "${image}"
         docker rmi ${image}:latest
+        let status+=$?
     fi
 
-    return 0 #TODO return status
+    return ${status}
 }
 
 # If no version specified, build and push all versions
