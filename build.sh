@@ -52,7 +52,7 @@ build(){
     do
         bargs+=(--build-arg "${line}")
     done < .build-args
-    docker build "${bargs[@]}" --no-cache -t ${image}:${version} ${context} 2>&1 >>${logfile}
+    docker buildx build "${bargs[@]}" --no-cache -t ${image}:${version} ${context} 2>&1 >>${logfile}
 
     status=$?
 
