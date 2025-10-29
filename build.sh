@@ -131,6 +131,12 @@ cleanup(){
         let status+=$?
     fi
 
+    # Prune docker builder cache
+    printf "\033[01mPruning docker builder cache...\033[00m\n"
+    docker builder prune --force
+    let status+=$?
+
+
     return ${status}
 }
 
